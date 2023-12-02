@@ -4,6 +4,7 @@
         "*.java": "java",
         "stm32f10x_conf.h": "c",
         "stm32f10x_dac.h": "c",
-        "stm32f10x_crc.h": "c"
+        "stm32f10x_crc.h": "c",
+        "stm32f10x.h": "c"
     }
 }

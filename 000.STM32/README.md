@@ -26,9 +26,18 @@
 #### 使用交叉编译工具链
 &nbsp;&nbsp;在cmake 的 CMakeLists.txt 脚本中指定
  ```cmake
-    #  C
-    set(CMAKE_C_COMPILER "/usr/bin/gcc")
+    SET(TOOLCHAIN_PATH "/home/wei/WorkSpace/apps/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi/bin/")
+    SET(CMAKE_ASM_COMPILER "${TOOLCHAIN_PATH}arm-none-eabi-gcc" )
+    SET(CMAKE_C_COMPILER "${TOOLCHAIN_PATH}arm-none-eabi-gcc" )
+    SET(CMAKE_CXX_COMPILER "${TOOLCHAIN_PATH}arm-none-eabi-c++" )
+    SET(CMAKE_C_AR "${TOOLCHAIN_PATH}arm-none-eabi-ar" )
+    SET(CMAKE_C_LINKER "${TOOLCHAIN_PATH}arm-none-eabi-ld" )
+    SET(CMAKE_OBJCOPY "${TOOLCHAIN_PATH}arm-none-eabi-objcopy" )
+    SET(CMAKE_OBJDUMP "${TOOLCHAIN_PATH}arm-none-eabi-objdump" )
+    SET(CMAKE_SIZE "${TOOLCHAIN_PATH}arm-none-eabi-size" )
+ ```
+
+ ### 程序下载到STM32开发板上并运行（烧录工具的安装及使用:stlink）
+ ```txt
     
-    # C++
-    set(CMAKE_CXX_COMPILER "/usr/bin/g++")
  ```

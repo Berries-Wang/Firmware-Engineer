@@ -47,9 +47,9 @@
 │       ├── stm32f10x_tim.c
 │       ├── stm32f10x_usart.c
 │       └── stm32f10x_wwdg.c
+│       ├── stm32f10x_conf.h # 配置库函数头文件包含关系
+│       ├── stm32f10x_it.c   # 存放中断函数
+│       └── stm32f10x_it.h   # 存放中断函数
 └── src
     ├── main.c  # main函数,启动函数
-    ├── stm32f10x_conf.h # 配置库函数头文件包含关系
-    ├── stm32f10x_it.c   # 存放中断函数
-    └── stm32f10x_it.h   # 存放中断函数
 ```

@@ -8,7 +8,7 @@ message("PATH_WORKSPACE_ROOT: ${PATH_WORKSPACE_ROOT}")
 # 日志有颜色
 SET(CMAKE_COLOR_DIAGNOSTICS True)
 
-# 指定启动文件,类似于引导，否则程序不会执行
+# 指定启动文件,类似于引导，否则程序不会执行: 需要选择 gcc_ride7下面的，不能选择arm目录下的，是否和编译平台有关?
 set(STARTUP_FILE ${PATH_WORKSPACE_ROOT}/libs/device_libs/startup_stm32f10x_md.s)
 # 指定链接文件，这个是从STM32cubemx创建的项目里面拷贝来的
 SET(LINKER_SCRIPT ${PATH_WORKSPACE_ROOT}/libs/device_libs/STM32F103C8Tx_FLASH.ld)

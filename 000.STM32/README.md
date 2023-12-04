@@ -39,3 +39,6 @@
 
  ### 程序下载到STM32开发板上并运行（烧录工具的安装及使用:stlink）
 &nbsp;&nbsp;通过stlink将代码烧录到板子上，使用手册:[STLink使用手册](000.STM32/001.STLink/001.Service_Manual)
+
+#### Start UP （启航）
+&nbsp;&nbsp;详见项目[000.STM32F103C8T6_1](./000.STM32F103C8T6/000.STM32F103C8T6_1/000.STM32F103C8T6_1)

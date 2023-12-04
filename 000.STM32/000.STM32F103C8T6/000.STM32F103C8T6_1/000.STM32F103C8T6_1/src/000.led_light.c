@@ -9,7 +9,7 @@ void main(int argc, char **argv)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-    GPIO_SetBits(GPIOC, GPIO_Pin_13);
+    //GPIO_SetBits(GPIOC, GPIO_Pin_13);
     GPIO_ResetBits(GPIOC, GPIO_Pin_13);
 
     for (;;)

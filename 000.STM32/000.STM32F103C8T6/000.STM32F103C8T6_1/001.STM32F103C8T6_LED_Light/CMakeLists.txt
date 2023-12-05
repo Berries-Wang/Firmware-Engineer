@@ -51,19 +51,19 @@ file(GLOB_RECURSE DriverC ${PATH_WORKSPACE_ROOT}/libs/STM32_Driver/*.c)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/device_libs ${CMAKE_CURRENT_SOURCE_DIR}/libs/STM32_Driver)
 
-SET(HELLO_WORLD "HELLO_WORLD")
-SET(OUTPUT_EXE_NAME "HELLO_WORLD_EXE")
+SET(LED_LIGHT "LED_LIGHT")
+SET(OUTPUT_EXE_NAME "LED_LIGHT")
 
-add_executable(${HELLO_WORLD} src/000.Hello_World.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT})
+add_executable(${LED_LIGHT} src/001.led_light.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT})
 
 # 通过st-flash烧录，是要将.bin文件烧录到STM32中
 ADD_CUSTOM_COMMAND(
-  TARGET "${HELLO_WORLD}"
+  TARGET "${LED_LIGHT}"
   POST_BUILD
   # Build .bin files
-  COMMAND ${CMAKE_OBJCOPY} -Obinary "${HELLO_WORLD}" "${OUTPUT_EXE_NAME}.bin"
+  COMMAND ${CMAKE_OBJCOPY} -Obinary "${LED_LIGHT}" "${OUTPUT_EXE_NAME}.bin"
   COMMENT "Building ${OUTPUT_EXE_NAME}.bin"
   # Display sizes
-  COMMAND ${CMAKE_SIZE} --format=berkeley ${HELLO_WORLD}
+  COMMAND ${CMAKE_SIZE} --format=berkeley ${LED_LIGHT}
   COMMENT "Invoking: Cross ARM GNU Print Size"
   )

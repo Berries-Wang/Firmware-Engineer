@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.java": "java",
+        "stm32f10x_conf.h": "c",
+        "stm32f10x.h": "c"
+    }
+}

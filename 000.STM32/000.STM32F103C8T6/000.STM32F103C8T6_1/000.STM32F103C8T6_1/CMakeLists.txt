@@ -60,10 +60,9 @@ add_executable(${LED_LIGHT} src/000.led_light.c ${DeviceH} ${DeviceC} ${DriverH}
 ADD_CUSTOM_COMMAND(
   TARGET "${LED_LIGHT}"
   POST_BUILD
-  # Build .hex and .bin files
+  # Build .bin files
   COMMAND ${CMAKE_OBJCOPY} -Obinary "${LED_LIGHT}" "${OUTPUT_EXE_NAME}.bin"
-  COMMAND ${CMAKE_OBJCOPY} -Oihex "${LED_LIGHT}" "${OUTPUT_EXE_NAME}.hex"
-  COMMENT "Building ${OUTPUT_EXE_NAME}.bin and ${OUTPUT_EXE_NAME}.hex"
+  COMMENT "Building ${OUTPUT_EXE_NAME}.bin"
   # Display sizes
   COMMAND ${CMAKE_SIZE} --format=berkeley ${LED_LIGHT}
   COMMENT "Invoking: Cross ARM GNU Print Size"

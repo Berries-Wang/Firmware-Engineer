@@ -1,4 +1,5 @@
 #include "stm32f10x.h"
+#include "Delay.h"
 
 /**
  * 通过README.md 可以知晓接，A0接的是负极，那么只有是低电平时才有电流通过，灯才会亮。
@@ -7,7 +8,7 @@
  */
 int main(void)
 {
-    // 开启GPIOC的时钟,使用各个外设前必须开启时钟，否则对外设的操作无效
+    // 开启GPIOA的时钟,使用各个外设前必须开启时钟，否则对外设的操作无效
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -18,15 +19,19 @@ int main(void)
 
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-    // 设置低电平，亮灯
-    GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_RESET);
-
-    // 设置高电平，灭灯
-    // GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_SET);
-
     while (1)
     {
-        // do nothing
+        // 设置低电平，亮灯
+        GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_RESET);
+
+        // 延迟300ms
+        Delay_ms(300);
+
+        // 设置高电平，灭灯
+        GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_SET);
+
+        // 延迟300ms
+        Delay_ms(300);
     }
     return 0;
 }

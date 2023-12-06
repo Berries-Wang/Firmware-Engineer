@@ -48,13 +48,22 @@ file(GLOB_RECURSE DeviceH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/device_libs/*.
 file(GLOB_RECURSE DeviceC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/device_libs/*.c)
 file(GLOB_RECURSE DriverH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/STM32_Driver/*.h)
 file(GLOB_RECURSE DriverC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/STM32_Driver/*.c)
+file(GLOB_RECURSE SystemH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/System_Libs/*.h)
+file(GLOB_RECURSE SystemC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/System_Libs/*.c)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/device_libs ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/STM32_Driver)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/device_libs ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/STM32_Driver ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/System_Libs)
 
 SET(LED_LIGHT "LED_LIGHT")
 SET(OUTPUT_EXE_NAME "LED_LIGHT")
 
 add_executable(${LED_LIGHT} src/001.led_light.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT})
+
+add_executable(${LED_LIGHT}_BLINK src/002.led_light_blink.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT} ${SystemH} ${SystemC})
+
+add_executable(${LED_LIGHT}_WATERFALL src/003.led_waterfall_light.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT} ${SystemH} ${SystemC})
+
+add_executable(${LED_LIGHT}_WATERFALL_BUZZER src/004.Buzzer_Led_waterfall_light.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT} ${SystemH} ${SystemC})
+
 
 # 通过st-flash烧录，是要将.bin文件烧录到STM32中
 ADD_CUSTOM_COMMAND(
@@ -65,5 +74,44 @@ ADD_CUSTOM_COMMAND(
   COMMENT "Building ${OUTPUT_EXE_NAME}.bin"
   # Display sizes
   COMMAND ${CMAKE_SIZE} --format=berkeley ${LED_LIGHT}
+  COMMENT "Invoking: Cross ARM GNU Print Size"
+  )
+
+# 通过st-flash烧录，是要将.bin文件烧录到STM32中
+# LED 闪烁
+ADD_CUSTOM_COMMAND(
+  TARGET "${LED_LIGHT}_BLINK"
+  POST_BUILD
+  # Build .bin files
+  COMMAND ${CMAKE_OBJCOPY} -Obinary "${LED_LIGHT}_BLINK" "${OUTPUT_EXE_NAME}_BLINK.bin"
+  COMMENT "Building ${OUTPUT_EXE_NAME}_BLINK.bin"
+  # Display sizes
+  COMMAND ${CMAKE_SIZE} --format=berkeley ${LED_LIGHT}_BLINK
+  COMMENT "Invoking: Cross ARM GNU Print Size"
+  )
+
+# 通过st-flash烧录，是要将.bin文件烧录到STM32中
+# LED 流水灯
+ADD_CUSTOM_COMMAND(
+  TARGET "${LED_LIGHT}_WATERFALL"
+  POST_BUILD
+  # Build .bin files
+  COMMAND ${CMAKE_OBJCOPY} -Obinary "${LED_LIGHT}_WATERFALL" "${OUTPUT_EXE_NAME}_WATERFALL.bin"
+  COMMENT "Building ${OUTPUT_EXE_NAME}_WATERFALL.bin"
+  # Display sizes
+  COMMAND ${CMAKE_SIZE} --format=berkeley ${LED_LIGHT}_WATERFALL
+  COMMENT "Invoking: Cross ARM GNU Print Size"
+  )
+
+  # 通过st-flash烧录，是要将.bin文件烧录到STM32中
+# LED 流水灯 + 蜂鸣器
+ADD_CUSTOM_COMMAND(
+  TARGET "${LED_LIGHT}_WATERFALL_BUZZER"
+  POST_BUILD
+  # Build .bin files
+  COMMAND ${CMAKE_OBJCOPY} -Obinary "${LED_LIGHT}_WATERFALL_BUZZER" "${OUTPUT_EXE_NAME}_WATERFALL_BUZZER.bin"
+  COMMENT "Building ${OUTPUT_EXE_NAME}_WATERFALL_BUZZER.bin"
+  # Display sizes
+  COMMAND ${CMAKE_SIZE} --format=berkeley ${LED_LIGHT}_WATERFALL_BUZZER
   COMMENT "Invoking: Cross ARM GNU Print Size"
   )

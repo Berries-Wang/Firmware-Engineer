@@ -13,11 +13,11 @@ int main(void)
 
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-    // GPIO_SetBits(GPIOC, GPIO_Pin_13);
-    //GPIO_ResetBits(GPIOC, GPIO_Pin_13);
-
     // 设置低电平，亮灯
     GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_RESET);
+
+    // 设置高电平，灭灯
+    // GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_SET);
 
     while (1)
     {

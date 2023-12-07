@@ -4,6 +4,9 @@
         "*.java": "java",
         "stm32f10x_rcc.h": "c",
         "stm32f10x.h": "c",
-        "delay.h": "c"
+        "delay.h": "c",
+        "stm32f10x_gpio.h": "c",
+        "button.h": "c",
+        "led.h": "c"
     }
 }

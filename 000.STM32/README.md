@@ -44,3 +44,11 @@
 &nbsp;&nbsp;详见项目[000.STM32F103C8T6_1](./000.STM32F103C8T6/000.STM32F103C8T6_1/000.STM32F103C8T6_1)
 
 ## 调试环境
+### 软件安装
+1. VSCode 插件 - 'Cortex-Debug' 
+2. OpenOCD  (Open On-Chip Debugger)
+   - 因为是调试STM32,所以使用: STMicroelectronics/OpenOCD
+   - 安装详见: [000.STM32/003.OpenOCD](003.OpenOCD/README.md)
+
+### 调试方式
+

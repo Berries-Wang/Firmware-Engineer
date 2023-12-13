@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "000.Start-Debug",
+            "cwd": "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts",
+            "executable": "${workspaceFolder}/000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/003.STM32F103C8T6_BUTTON_CONTROL_LED/build/Button_Control_Led",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "openocd",
+            "device": "STM32F103C8T6",
+            "configFiles": [
+                "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+                "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+            ],
+            "showDevDebugOutput": "vscode"
+        }
+    ]
+}

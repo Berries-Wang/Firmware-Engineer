@@ -8,5 +8,8 @@
         "stm32f10x_gpio.h": "c",
         "button.h": "c",
         "led.h": "c"
-    }
+    },
+    "cortex-debug.openocdPath": "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/001.EPREFIX/bin/openocd",
+    "cortex-debug.armToolchainPath": "/home/wei/WorkSpace/apps/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi/bin/",
+    "cortex-debug.stlinkPath": "${workspaceFolder}/000.STM32/001.STLink/000.v1.17.0/stlink/build/bin",
 }

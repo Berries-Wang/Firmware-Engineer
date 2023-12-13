@@ -1,23 +1,43 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "000.Start-Debug",
-            "cwd": "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts",
-            "executable": "${workspaceFolder}/000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/003.STM32F103C8T6_BUTTON_CONTROL_LED/build/Button_Control_Led",
-            "request": "launch",
-            "type": "cortex-debug",
-            "runToEntryPoint": "main",
-            "servertype": "openocd",
-            "device": "STM32F103C8T6",
-            "configFiles": [
-                "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-                "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
-            ],
-            "showDevDebugOutput": "vscode"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: [VSCode 官方文档]: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    // Cortex-Debug 配置文档: https://github.com/Marus/cortex-debug/blob/master/debug_attributes.md
+    {
+      "name": "000.Debug-Config-Template",
+      "cwd": "${workspaceFolder}",
+      /*可执行文件地址，ELF格式，而不是BIN格式*/
+      "executable": "${workspaceFolder}/000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/003.STM32F103C8T6_BUTTON_CONTROL_LED/build/Button_Control_Led",
+      "request": "launch",
+      /*the type of debugger to use for this launch configuration.参考: 'VSCode 官方文档' */
+      "type": "cortex-debug",
+      "runToEntryPoint": "main",
+      /* GDB Server type - supported types are jlink, openocd, pyocd, pe, stlink, stutil, qemu, bmp and external.
+       * 请参考 "000.STM32/README.md"#调试原理
+       */
+      "servertype": "openocd",
+      /*芯片类型*/
+      "device": "STM32F103C8T6",
+      /*等价于openocd命令行参数: -f */
+      "configFiles": [
+        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+      ],
+      /*等价于 openocd 命令行参数 -s */
+      "searchDir": [
+        // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+      ],
+      /**
+       * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions
+       */
+      "showDevDebugOutput": "both",
+      /*OpenOCD commands to run prior to loading configuration files.: 加载配置文件钱执行*/
+      "openOCDPreConfigLaunchCommands": [],
+      /*OpenOCD commands to run in order to launch target.(OpenOCD命令运行以启动目标。)*/
+      "openOCDLaunchCommands": []
+    }
+  ]
 }

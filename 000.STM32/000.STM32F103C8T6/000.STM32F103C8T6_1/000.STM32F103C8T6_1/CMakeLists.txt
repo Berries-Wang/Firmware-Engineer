@@ -54,13 +54,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/device_libs ${CMAKE_CURRENT
 SET(HELLO_WORLD "HELLO_WORLD")
 SET(OUTPUT_EXE_NAME "HELLO_WORLD_EXE")
 
+# 此时生成的是ELF格式文件,烧录到STM32中，STM32也无法执行，见: 001.嵌入式知识库/001.文件格式/README.md
 add_executable(${HELLO_WORLD} src/000.Hello_World.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT})
 
 # 通过st-flash烧录，是要将.bin文件烧录到STM32中
 ADD_CUSTOM_COMMAND(
   TARGET "${HELLO_WORLD}"
   POST_BUILD
-  # Build .bin files
+  # Build .bin files , 构建BIN格式文件，烧录到STM32后，STM32可执行,见: 001.嵌入式知识库/001.文件格式/README.md
   COMMAND ${CMAKE_OBJCOPY} -Obinary "${HELLO_WORLD}" "${OUTPUT_EXE_NAME}.bin"
   COMMENT "Building ${OUTPUT_EXE_NAME}.bin"
   # Display sizes

@@ -24,7 +24,7 @@
 1. 宿主机(x86_64 GNU/Linux) ， 目标机(ARM Cortex-Mx) , 所以需要按照交叉编译工具链:[arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 #### 使用交叉编译工具链
-&nbsp;&nbsp;在cmake 的 CMakeLists.txt 脚本中指定
+&nbsp;&nbsp;在cmake 的 CMakeLists.txt 脚本中指定: 请参考:[000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/000.STM32F103C8T6_1/CMakeLists.txt](../000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/000.STM32F103C8T6_1/CMakeLists.txt)
  ```cmake
     SET(TOOLCHAIN_PATH "/home/wei/WorkSpace/apps/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi/bin/")
     SET(CMAKE_ASM_COMPILER "${TOOLCHAIN_PATH}arm-none-eabi-gcc" )
@@ -37,8 +37,15 @@
     SET(CMAKE_SIZE "${TOOLCHAIN_PATH}arm-none-eabi-size" )
  ```
 
+#### Bootloader(启动文件) & 链接库 & 可执行文件(烧录到STM32的文件) ... 详见:编译脚本
+> 编译脚本: [000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/000.STM32F103C8T6_1/CMakeLists.txt](../000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/000.STM32F103C8T6_1/CMakeLists.txt)
+1. 指定启动文件
+2. 指定链接文件
+3. 生成BIN文件，因为烧录到STM32的代码格式是 BIN，否则STM32无法启动
+
 ### 程序下载到STM32开发板上并运行（烧录工具的安装及使用:stlink）
-&nbsp;&nbsp;通过stlink将代码烧录到板子上，使用手册:[STLink使用手册](000.STM32/001.STLink/001.Service_Manual)
+&nbsp;&nbsp;通过stlink将代码烧录到板子上，使用手册:[STLink使用手册](../000.STM32/001.STLink/001.Service_Manual)
+> 注意！需要将BIN格式文件烧录到STM32中，详细参考:[STLink使用手册#README.md](../000.STM32/001.STLink/README.md)
 
 ## Start UP （启航）-- 环境搭建示例-已经点亮PC13
 &nbsp;&nbsp;详见项目[000.STM32F103C8T6_1](./000.STM32F103C8T6/000.STM32F103C8T6_1/000.STM32F103C8T6_1)
@@ -49,6 +56,20 @@
 2. OpenOCD  (Open On-Chip Debugger)
    - 因为是调试STM32,所以使用: STMicroelectronics/OpenOCD
    - 安装详见: [000.STM32/003.OpenOCD](003.OpenOCD/README.md)
+   - 调试原理: <img src="./999.开发问题收集/002.ref_imgs/Cortex-Debug_logic.jpg">
+3. STLink
 
-### 调试方式
+### 调试方式 (settings.json & launch.json)
+> 调试方式无特殊之处，关键还是配置信息,具体请参考: [settings.json](../.vscode/settings.json) & [launch.json](../.vscode/launch.json) 配置内容以及注释
 
+### 调试环境配置问题 
+1. 给代码生成调试信息: 否则无法调试，即无法打断点调试
+   ```txt
+      在cmake的时候添加选项，生成调试信息:
+        cmake -DCMAKE_BUILD_TYPE=Debug/Release path/to/source(即..,即项目源码路径，即CMakeLists.txt路径)
+      或在CMakeLists.txt中直接设置参数:
+        SET(ENV(CMAKE_BUILD_TYPE) "Debug") / SET(CMAKE_BUILD_TYPE "Debug")
+   ```
+### 调试环境注意事项
+1. 在调试STM32时，需要将STM32开发板连接到电脑上，否则GDB Server会异常终止退出。详见: ’调试原理‘ （在本文搜索 "调试原理"）
+   > 启动调试时，可以发现，尽管你没有操作，STLink烧录工具的灯一直在闪烁，而闪烁之前只发生在将程序烧录到STM32时，其他时刻都是常亮。

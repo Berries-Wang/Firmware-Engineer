@@ -18,3 +18,20 @@
 ### 编译问题
 1. jimtcl not found, run git submodule init and git submodule update.
    + 原因: 代码clone下来后，不能将项目中.git目录删除.
+
+2. 点击调试，卡在: Launching GDB: arm-none-eabi-gdb -q --interpreter=mi2
+1-gdb-version
+   ```txt
+      执行一下命令: arm-none-eabi-gdb -q --interpreter=mi2,就能看到问题。
+      arm-none-eabi-gdb -q --interpreter=mi2
+      arm-none-eabi-gdb: error while loading shared libraries: libncursesw.so.5: cannot open shared object file: No such file or directory
+
+      安装库: sudo apt install libncursesw5
+
+      再执行一下:  Launching GDB: arm-none-eabi-gdb -q --interpreter=mi2 可以发现缺少 libpython3.6m.so.1.0 库，
+      arm-none-eabi-gdb -q --interpreter=mi2
+      arm-none-eabi-gdb: error while loading shared libraries: libpython3.6m.so.1.0: cannot open shared object file: No such file or directory
+      处理: 
+      cd /usr/lib/x86_64-linux-gnu/
+      $ sudo ln -s libpython3.8.so.1.0 libpython3.6m.so.1.0
+   ```

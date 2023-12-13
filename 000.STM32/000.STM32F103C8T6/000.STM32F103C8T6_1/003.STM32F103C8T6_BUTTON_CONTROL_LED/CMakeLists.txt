@@ -36,6 +36,9 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --specs=nano.specs -specs=rdimon.specs --spe
 # ASMFLAGS
 set(CMAKE_ASM_FLAGS " -x assembler-with-cpp ${CMAKE_C_FLAGS}")
 
+# 添加调试信息
+SET(CMAKE_BUILD_TYPE "Debug") 
+
 SET(CMAKE_EXE_LINKER_FLAGS
     "${CMAKE_EXE_LINKER_FLAGS} -T ${LINKER_SCRIPT}  -Wl,--gc-sections,--print-memory-usage"
 )

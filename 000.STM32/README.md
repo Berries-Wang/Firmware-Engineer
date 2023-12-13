@@ -68,8 +68,13 @@
       在cmake的时候添加选项，生成调试信息:
         cmake -DCMAKE_BUILD_TYPE=Debug/Release path/to/source(即..,即项目源码路径，即CMakeLists.txt路径)
       或在CMakeLists.txt中直接设置参数:
-        SET(ENV(CMAKE_BUILD_TYPE) "Debug") / SET(CMAKE_BUILD_TYPE "Debug")
+        SET(CMAKE_BUILD_TYPE "Debug") 
    ```
+2. 调试软件安装问题: 文档在对应软件目录中
 ### 调试环境注意事项
-1. 在调试STM32时，需要将STM32开发板连接到电脑上，否则GDB Server会异常终止退出。详见: ’调试原理‘ （在本文搜索 "调试原理"）
-   > 启动调试时，可以发现，尽管你没有操作，STLink烧录工具的灯一直在闪烁，而闪烁之前只发生在将程序烧录到STM32时，其他时刻都是常亮。
+1. 错误信息: OpenOCD: GDB Server Quit Unexpectedly. See gdb-server output in TERMINAL tab
+   - 在调试STM32时，需要将STM32开发板连接到电脑上，否则GDB Server会异常终止退出。详见: ’调试原理‘ （在本文搜索 "调试原理"）
+     > 启动调试时，可以发现，尽管你没有操作，STLink烧录工具的灯一直在闪烁，而闪烁之前只发生在将程序烧录到STM32时，其他时刻都是常亮。
+
+### 开始调试
+> <img src="./999.开发问题收集/002.ref_imgs/2023-12-13_21-06_Cortex-Debug_complete.png"/>

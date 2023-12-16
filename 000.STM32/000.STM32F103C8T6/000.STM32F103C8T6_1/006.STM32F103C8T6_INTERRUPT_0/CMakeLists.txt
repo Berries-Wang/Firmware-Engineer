@@ -40,34 +40,42 @@ SET(CMAKE_EXE_LINKER_FLAGS
     "${CMAKE_EXE_LINKER_FLAGS} -T ${LINKER_SCRIPT}  -Wl,--gc-sections,--print-memory-usage"
 )
 
+# 为了引入'stm32f10x_conf.h' 头文件，见: stm32f10x.h
+add_compile_definitions(STM32F10X_MD USE_STDPERIPH_DRIVER)
+
 # 添加调试信息
 SET(CMAKE_BUILD_TYPE "Debug") 
 
-# 为了引入'stm32f10x_conf.h' 头文件，见: stm32f10x.h
-add_compile_definitions(STM32F10X_MD USE_STDPERIPH_DRIVER)
 
 # 平台基础文件
 file(GLOB_RECURSE DeviceH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/device_libs/*.h)
 file(GLOB_RECURSE DeviceC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/device_libs/*.c)
 file(GLOB_RECURSE DriverH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/STM32_Driver/*.h)
 file(GLOB_RECURSE DriverC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/STM32_Driver/*.c)
+file(GLOB_RECURSE SystemH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/System_Libs/*.h)
+file(GLOB_RECURSE SystemC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/System_Libs/*.c)
+file(GLOB_RECURSE OLED_DRIVERH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver/*.h)
+file(GLOB_RECURSE OLED_DRIVERC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver/*.c)
 
-include_directories(${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/device_libs ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/STM32_Driver)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/device_libs 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/STM32_Driver 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/System_Libs 
+    ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver)
 
-SET(HELLO_WORLD "HELLO_WORLD")
-SET(OUTPUT_EXE_NAME "HELLO_WORLD_EXE")
+SET(DuiSheHongWai_Count "DuiSheHongWai_Count")
 
-# 此时生成的是ELF格式文件,烧录到STM32中，STM32也无法执行，见: 001.嵌入式知识库/001.文件格式/README.md
-add_executable(${HELLO_WORLD} src/000.Hello_World.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT})
+add_executable(${DuiSheHongWai_Count} src/000.DuiSheHongWai_Count.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT}
+   ${SystemH} ${SystemC} 
+   ${OLED_DRIVERH} ${OLED_DRIVERC})
 
 # 通过st-flash烧录，是要将.bin文件烧录到STM32中
 ADD_CUSTOM_COMMAND(
-  TARGET "${HELLO_WORLD}"
+  TARGET "${DuiSheHongWai_Count}"
   POST_BUILD
-  # Build .bin files , 构建BIN格式文件，烧录到STM32后，STM32可执行,见: 001.嵌入式知识库/001.文件格式/README.md
-  COMMAND ${CMAKE_OBJCOPY} -Obinary "${HELLO_WORLD}" "${OUTPUT_EXE_NAME}.bin"
-  COMMENT "Building ${OUTPUT_EXE_NAME}.bin"
+  # Build .bin files
+  COMMAND ${CMAKE_OBJCOPY} -Obinary "${DuiSheHongWai_Count}" "${DuiSheHongWai_Count}.bin"
+  COMMENT "Building ${DuiSheHongWai_Count}.bin"
   # Display sizes
-  COMMAND ${CMAKE_SIZE} --format=berkeley ${HELLO_WORLD}
+  COMMAND ${CMAKE_SIZE} --format=berkeley ${DuiSheHongWai_Count}
   COMMENT "Invoking: Cross ARM GNU Print Size"
   )

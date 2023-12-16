@@ -62,7 +62,7 @@ void DuiSheHongWai_Count_init()
     }
 }
 
-// 中断函数
+// 中断函数: 函数名是固定的，见文件:000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/002.BASE_LIBS/device_libs/startup_stm32f10x_md.s
 void EXTI15_10_IRQHandler()
 {
     if (EXTI_GetITStatus(EXTI_Line14) == SET)

@@ -63,8 +63,13 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/device_libs
     ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver)
 
 SET(DuiSheHongWai_Count "DuiSheHongWai_Count")
+SET(XuanZhuanBianMa_count "XuanZhuanBianMa_count")
 
 add_executable(${DuiSheHongWai_Count} src/000.DuiSheHongWai_Count.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT}
+   ${SystemH} ${SystemC} 
+   ${OLED_DRIVERH} ${OLED_DRIVERC})
+
+add_executable(${XuanZhuanBianMa_count} src/001.XuanZhuanBianMa_count.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT}
    ${SystemH} ${SystemC} 
    ${OLED_DRIVERH} ${OLED_DRIVERC})
 
@@ -75,7 +80,10 @@ ADD_CUSTOM_COMMAND(
   # Build .bin files
   COMMAND ${CMAKE_OBJCOPY} -Obinary "${DuiSheHongWai_Count}" "${DuiSheHongWai_Count}.bin"
   COMMENT "Building ${DuiSheHongWai_Count}.bin"
-  # Display sizes
-  COMMAND ${CMAKE_SIZE} --format=berkeley ${DuiSheHongWai_Count}
-  COMMENT "Invoking: Cross ARM GNU Print Size"
+
+  TARGET "${DuiSheHongWai_Count}"
+  POST_BUILD
+  # Build .bin files
+  COMMAND ${CMAKE_OBJCOPY} -Obinary "${XuanZhuanBianMa_count}" "${XuanZhuanBianMa_count}.bin"
+  COMMENT "Building ${XuanZhuanBianMa_count}.bin"
   )

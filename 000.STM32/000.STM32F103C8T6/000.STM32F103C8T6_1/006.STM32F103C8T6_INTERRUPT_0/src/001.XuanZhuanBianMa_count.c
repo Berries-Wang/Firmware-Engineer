@@ -90,7 +90,8 @@ int16_t getCount()
 void EXTI0_IRQHandler()
 {
     if (EXTI_GetITStatus(EXTI_Line0) == SET)
-    {
+    {   
+        // 这个需要根据波形来处理
         if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1) == 0)
         {
             COUNT--;

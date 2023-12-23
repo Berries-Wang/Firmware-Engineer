@@ -10,7 +10,8 @@
     "delay.h": "c",
     "stm32f10x_gpio.h": "c",
     "button.h": "c",
-    "led.h": "c"
+    "led.h": "c",
+    "timstu.h": "c"
   },
   /*OpenOCD路径*/
   "cortex-debug.openocdPath": "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/001.EPREFIX/bin/openocd",

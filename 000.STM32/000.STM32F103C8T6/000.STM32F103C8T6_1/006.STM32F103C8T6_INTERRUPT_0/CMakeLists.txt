@@ -56,14 +56,19 @@ file(GLOB_RECURSE SystemH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/System_Libs/*.
 file(GLOB_RECURSE SystemC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/System_Libs/*.c)
 file(GLOB_RECURSE OLED_DRIVERH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver/*.h)
 file(GLOB_RECURSE OLED_DRIVERC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver/*.c)
+file(GLOB_RECURSE TIM_STU_H ${PATH_WORKSPACE_ROOT}/src/TIM/*.h)
+file(GLOB_RECURSE TIM_STU_C ${PATH_WORKSPACE_ROOT}/src/TIM/*.c)
+message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/device_libs 
     ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/STM32_Driver 
     ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/System_Libs 
-    ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver)
+    ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver
+    ${PATH_WORKSPACE_ROOT}/src/TIM)
 
 SET(DuiSheHongWai_Count "DuiSheHongWai_Count")
 SET(XuanZhuanBianMa_count "XuanZhuanBianMa_count")
+SET(TIM_IT_0 "TIM_IT_0")
 
 add_executable(${DuiSheHongWai_Count} src/000.DuiSheHongWai_Count.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT}
    ${SystemH} ${SystemC} 
@@ -72,6 +77,10 @@ add_executable(${DuiSheHongWai_Count} src/000.DuiSheHongWai_Count.c ${DeviceH} $
 add_executable(${XuanZhuanBianMa_count} src/001.XuanZhuanBianMa_count.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT}
    ${SystemH} ${SystemC} 
    ${OLED_DRIVERH} ${OLED_DRIVERC})
+
+add_executable(${TIM_IT_0} src/002.Timer_0.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT}
+   ${SystemH} ${SystemC} 
+   ${OLED_DRIVERH} ${OLED_DRIVERC} ${TIM_STU_H} ${TIM_STU_C})
 
 # 通过st-flash烧录，是要将.bin文件烧录到STM32中
 ADD_CUSTOM_COMMAND(
@@ -87,3 +96,12 @@ ADD_CUSTOM_COMMAND(
   COMMAND ${CMAKE_OBJCOPY} -Obinary "${XuanZhuanBianMa_count}" "${XuanZhuanBianMa_count}.bin"
   COMMENT "Building ${XuanZhuanBianMa_count}.bin"
   )
+
+ADD_CUSTOM_COMMAND(
+  TARGET "${TIM_IT_0}"
+  POST_BUILD
+  # Build .bin files
+  COMMAND ${CMAKE_OBJCOPY} -Obinary "${TIM_IT_0}" "${TIM_IT_0}.bin"
+  COMMENT "Building ${TIM_IT_0}.bin"
+  )
+

@@ -2,6 +2,8 @@
 #include "stm32f10x.h"
 #include "OLED.h"
 
+void DuiSheHongWai_Count_init();
+
 static uint16_t oled_show_count = 0;
 
 int main(int argc, char **argv)

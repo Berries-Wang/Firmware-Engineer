@@ -68,6 +68,7 @@ void Timer_External_Init()
     // CK_CNT_OV = CK_CNT / (ARR + 1) = CK_PSC / (PSC + 1) / (ARR + 1)
     // CK_PSC = 72MHZ , ARR = ${TIM_Period} , PSC = ${TIM_Prescaler} = 72MHZ / 7200 / 10000 = 10KHZ   (HZ，即 次/s) , 即，在10KHZ的频率下计10000个数，那就是每秒计一次数
     tim_TimeBaseInitStru.TIM_Period = 10 - 1;
+    // 关闭分频器,那就遮挡一下就会触发一次中断
     tim_TimeBaseInitStru.TIM_Prescaler = 1 - 1;
     tim_TimeBaseInitStru.TIM_RepetitionCounter = 0;
     TIM_TimeBaseInit(TIM2, &tim_TimeBaseInitStru);

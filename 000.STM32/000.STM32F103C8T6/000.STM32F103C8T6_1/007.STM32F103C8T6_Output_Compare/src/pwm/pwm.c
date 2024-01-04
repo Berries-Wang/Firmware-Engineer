@@ -12,8 +12,7 @@ void pwm_init()
     TIM_TimeBaseInitTypeDef tim_TimeBaseInitStru;
     tim_TimeBaseInitStru.TIM_ClockDivision = TIM_CKD_DIV1;
     tim_TimeBaseInitStru.TIM_CounterMode = TIM_CounterMode_Up; /*计数器模式*/
-    // CK_CNT_OV = CK_CNT / (ARR + 1) = CK_PSC / (PSC + 1) / (ARR + 1)
-    // CK_PSC = 72MHZ , ARR = ${TIM_Period} , PSC = ${TIM_Prescaler} = 72MHZ / 7200 / 10000 = 10KHZ   (HZ，即 次/s) , 即，在10KHZ的频率下计10000个数，那就是每秒计一次数
+    //参考: 000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/006.STM32F103C8T6_INTERRUPT_0/src/TIM/timStu.c
     tim_TimeBaseInitStru.TIM_Period = 100 - 1;
     tim_TimeBaseInitStru.TIM_Prescaler = 720 - 1;
     tim_TimeBaseInitStru.TIM_RepetitionCounter = 0;

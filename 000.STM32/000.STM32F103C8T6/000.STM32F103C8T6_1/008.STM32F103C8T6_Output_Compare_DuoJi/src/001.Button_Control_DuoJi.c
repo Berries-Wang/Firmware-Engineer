@@ -6,7 +6,7 @@ int main(int argc, char **argv)
 
     pwm_init();
 
-    pwm_setCompare2(1500);
+    pwm_setCompare2(2500);
     for (;;)
     {
     }

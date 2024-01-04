@@ -17,11 +17,12 @@ void Timer_Init()
     TIM_TimeBaseInitTypeDef tim_TimeBaseInitStru;
     tim_TimeBaseInitStru.TIM_ClockDivision = TIM_CKD_DIV1;
     tim_TimeBaseInitStru.TIM_CounterMode = TIM_CounterMode_Up; /*计数器模式*/
-    // CK_CNT_OV = CK_CNT / (ARR + 1) = CK_PSC / (PSC + 1) / (ARR + 1)
-    // CK_PSC = 72MHZ , ARR = ${TIM_Period} , PSC = ${TIM_Prescaler} = 72MHZ / 7200 / 10000 = 10KHZ   (HZ，即 次/s) , 即，在10KHZ的频率下计10000个数，那就是每秒计一次数
-    tim_TimeBaseInitStru.TIM_Period = 10000 - 1;
-    tim_TimeBaseInitStru.TIM_Prescaler = 7200 - 1;
-    tim_TimeBaseInitStru.TIM_RepetitionCounter = 0;
+    // 计数器溢出频率: CK_CNT_OV = CK_CNT / (ARR + 1) = CK_PSC / (PSC + 1) / (ARR + 1)
+    // CK_PSC = 72MHZ , ARR = ${TIM_Period} , PSC = ${TIM_Prescaler} = 72MHZ / 7200 / 10000 = 1HZ   (HZ，即 1次/s) , 即，在10KHZ的频率下计10000(${TIM_Period})个数，那就是每秒计一次数
+    // 对72MHZ进行7200分频，得到10K的计数频率
+    tim_TimeBaseInitStru.TIM_Period = 10000 - 1;    // ARR 自动重装器的值
+    tim_TimeBaseInitStru.TIM_Prescaler = 7200 - 1;  // PSC预分频器的值
+    tim_TimeBaseInitStru.TIM_RepetitionCounter = 0; // 重复计数器的值
     TIM_TimeBaseInit(TIM2, &tim_TimeBaseInitStru);
 
     // 4. 使能更新中断
@@ -65,9 +66,7 @@ void Timer_External_Init()
     TIM_TimeBaseInitTypeDef tim_TimeBaseInitStru;
     tim_TimeBaseInitStru.TIM_ClockDivision = TIM_CKD_DIV1;
     tim_TimeBaseInitStru.TIM_CounterMode = TIM_CounterMode_Up; /*计数器模式*/
-    // CK_CNT_OV = CK_CNT / (ARR + 1) = CK_PSC / (PSC + 1) / (ARR + 1)
-    // CK_PSC = 72MHZ , ARR = ${TIM_Period} , PSC = ${TIM_Prescaler} = 72MHZ / 7200 / 10000 = 10KHZ   (HZ，即 次/s) , 即，在10KHZ的频率下计10000个数，那就是每秒计一次数
-    tim_TimeBaseInitStru.TIM_Period = 10 - 1;
+ tim_TimeBaseInitStru.TIM_Period = 10 - 1;
     // 关闭分频器,那就遮挡一下就会触发一次中断
     tim_TimeBaseInitStru.TIM_Prescaler = 1 - 1;
     tim_TimeBaseInitStru.TIM_RepetitionCounter = 0;

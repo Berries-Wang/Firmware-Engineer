@@ -58,20 +58,23 @@ file(GLOB_RECURSE OLED_DRIVERH ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driv
 file(GLOB_RECURSE OLED_DRIVERC ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver/*.c)
 file(GLOB_RECURSE PWM_STU_H ${PATH_WORKSPACE_ROOT}/src/pwm_duoji/*.h)
 file(GLOB_RECURSE PWM_STU_C ${PATH_WORKSPACE_ROOT}/src/pwm_duoji/*.c)
+file(GLOB_RECURSE BUTTON_H ${PATH_WORKSPACE_ROOT}/src/button/*.h)
+file(GLOB_RECURSE BUTTON_C ${PATH_WORKSPACE_ROOT}/src/button/*.c)
 message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/device_libs 
     ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/STM32_Driver 
     ${CMAKE_CURRENT_SOURCE_DIR}/../002.BASE_LIBS/System_Libs 
     ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/OLED_Driver
-    ${PATH_WORKSPACE_ROOT}/src/pwm_duoji)
+    ${PATH_WORKSPACE_ROOT}/src/pwm_duoji
+    ${PATH_WORKSPACE_ROOT}/src/button)
 
 SET(PWM_DuoJi "PWM_DuoJi")
 
 
 add_executable(${PWM_DuoJi} src/001.Button_Control_DuoJi.c ${DeviceH} ${DeviceC} ${DriverH} ${DriverC} ${STARTUP_FILE} ${LINKR_SCRIPT}
    ${SystemH} ${SystemC} 
-   ${OLED_DRIVERH} ${OLED_DRIVERC} ${PWM_STU_H} ${PWM_STU_C})
+   ${OLED_DRIVERH} ${OLED_DRIVERC} ${PWM_STU_H} ${PWM_STU_C} ${BUTTON_H} ${BUTTON_C})
 
 # 通过st-flash烧录，是要将.bin文件烧录到STM32中
 ADD_CUSTOM_COMMAND(

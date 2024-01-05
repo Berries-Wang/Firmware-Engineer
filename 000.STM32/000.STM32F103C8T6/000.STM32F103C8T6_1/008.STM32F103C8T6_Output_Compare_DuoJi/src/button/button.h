@@ -7,7 +7,6 @@
  * 按键是接在B1口
  */
 void button_init();
-
 u8 key_getNum();
 
 #endif

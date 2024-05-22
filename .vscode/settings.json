@@ -6,9 +6,9 @@
     "*.c": "c"
   },
   /*OpenOCD路径*/
-  "cortex-debug.openocdPath": "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/001.EPREFIX/bin/openocd",
+  "cortex-debug.openocdPath": "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/001.EPREFIX/bin/openocd",
   /*交叉编译工具链路径*/
   "cortex-debug.armToolchainPath": "/home/wei/WorkSpace/apps/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi/bin/",
   /*STLink 仿真器路径*/
-  "cortex-debug.stlinkPath": "${workspaceFolder}/000.STM32/001.STLink/000.v1.17.0/stlink/build/bin"
+  "cortex-debug.stlinkPath": "${workspaceFolder}/000.STM32/001.STLink/000.SOURCE_CODE/CODE/000.v1.17.0/stlink/build/bin"
 }

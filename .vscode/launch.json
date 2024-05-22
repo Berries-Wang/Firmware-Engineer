@@ -22,13 +22,13 @@
       "device": "STM32F103C8T6",
       /*等价于openocd命令行参数: -f */
       "configFiles": [
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
       ],
       /*等价于 openocd 命令行参数 -s */
       "searchDir": [
         // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
-        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
       ],
       /**
        * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions
@@ -56,13 +56,13 @@
       "device": "STM32F103C8T6",
       /*等价于openocd命令行参数: -f */
       "configFiles": [
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
       ],
       /*等价于 openocd 命令行参数 -s */
       "searchDir": [
         // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
-        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
       ],
       /**
        * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions
@@ -90,13 +90,13 @@
       "device": "STM32F103C8T6",
       /*等价于openocd命令行参数: -f */
       "configFiles": [
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
       ],
       /*等价于 openocd 命令行参数 -s */
       "searchDir": [
         // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
-        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
       ],
       /**
        * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions
@@ -124,13 +124,13 @@
       "device": "STM32F103C8T6",
       /*等价于openocd命令行参数: -f */
       "configFiles": [
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
       ],
       /*等价于 openocd 命令行参数 -s */
       "searchDir": [
         // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
-        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
       ],
       /**
        * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions
@@ -158,13 +158,13 @@
       "device": "STM32F103C8T6",
       /*等价于openocd命令行参数: -f */
       "configFiles": [
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
       ],
       /*等价于 openocd 命令行参数 -s */
       "searchDir": [
         // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
-        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
       ],
       /**
        * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions
@@ -193,13 +193,13 @@
       "device": "STM32F103C8T6",
       /*等价于openocd命令行参数: -f */
       "configFiles": [
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
       ],
       /*等价于 openocd 命令行参数 -s */
       "searchDir": [
         // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
-        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
       ],
       /**
        * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions
@@ -227,13 +227,13 @@
       "device": "STM32F103C8T6",
       /*等价于openocd命令行参数: -f */
       "configFiles": [
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
-        "/home/wei/WorkSpace/open_source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/interface/stlink.cfg",
+        "/home/wei/WorkSpace/Open_Source/Firmware-Engineer/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts/board/stm32f103c8_blue_pill.cfg"
       ],
       /*等价于 openocd 命令行参数 -s */
       "searchDir": [
         // OpenOCD directories to search for config files and scripts (-s option). If no search directories are specified, it defaults to the configured cwd.
-        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/000.OpenOCD_v0.12.0/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
+        "${workspaceFolder}/000.STM32/003.OpenOCD/000.OpenOCD_SOURCE_CODE/OpenOCD/OpenOCD-INSTALL-DIR/000.PREFIX/share/openocd/scripts"
       ],
       /**
        * Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions

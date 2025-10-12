@@ -17,7 +17,7 @@ SET(LINKER_SCRIPT ${PATH_WORKSPACE_ROOT}/../002.BASE_LIBS/device_libs/STM32F103C
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 
 # 设置交叉编译工具链
-SET(TOOLCHAIN_PATH "/home/wei/WorkSpace/apps/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi/bin/")
+SET(TOOLCHAIN_PATH "/home/wei/apps/001.Arm-ToolChain/arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi/bin/")
 SET(CMAKE_ASM_COMPILER "${TOOLCHAIN_PATH}arm-none-eabi-gcc")
 SET(CMAKE_C_COMPILER "${TOOLCHAIN_PATH}arm-none-eabi-gcc")
 SET(CMAKE_CXX_COMPILER "${TOOLCHAIN_PATH}arm-none-eabi-c++")

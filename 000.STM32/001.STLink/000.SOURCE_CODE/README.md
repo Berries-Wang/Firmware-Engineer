@@ -13,6 +13,7 @@
   cd "${CUR_DIR}/build"
   cmake -DCMAKE_BUILD_TYPE=Debug ..
   make
+  make install  # 不然会报错: /usr/local/share/stlink/chips: No such file or directory
 ```
 
 ## 参考资料

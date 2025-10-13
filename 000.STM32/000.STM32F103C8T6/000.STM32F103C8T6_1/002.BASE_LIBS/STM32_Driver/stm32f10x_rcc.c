@@ -1078,20 +1078,20 @@ void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the High Speed APB (APB2) peripheral clock.
-  * @param  RCC_APB2Periph: specifies the APB2 peripheral to gates its clock.
-  *   This parameter can be any combination of the following values:
-  *     @arg RCC_APB2Periph_AFIO, RCC_APB2Periph_GPIOA, RCC_APB2Periph_GPIOB,
-  *          RCC_APB2Periph_GPIOC, RCC_APB2Periph_GPIOD, RCC_APB2Periph_GPIOE,
-  *          RCC_APB2Periph_GPIOF, RCC_APB2Periph_GPIOG, RCC_APB2Periph_ADC1,
-  *          RCC_APB2Periph_ADC2, RCC_APB2Periph_TIM1, RCC_APB2Periph_SPI1,
-  *          RCC_APB2Periph_TIM8, RCC_APB2Periph_USART1, RCC_APB2Periph_ADC3,
-  *          RCC_APB2Periph_TIM15, RCC_APB2Periph_TIM16, RCC_APB2Periph_TIM17,
-  *          RCC_APB2Periph_TIM9, RCC_APB2Periph_TIM10, RCC_APB2Periph_TIM11     
-  * @param  NewState: new state of the specified peripheral clock.
-  *   This parameter can be: ENABLE or DISABLE.
-  * @retval None
-  */
+ * @brief  Enables or disables the High Speed APB (APB2) peripheral clock.（启用或禁用高速APB（APB2）外设时钟）
+ * @param  RCC_APB2Periph: specifies the APB2 peripheral to gates its clock.
+ *   This parameter can be any combination of the following values:
+ *     @arg RCC_APB2Periph_AFIO, RCC_APB2Periph_GPIOA, RCC_APB2Periph_GPIOB,
+ *          RCC_APB2Periph_GPIOC, RCC_APB2Periph_GPIOD, RCC_APB2Periph_GPIOE,
+ *          RCC_APB2Periph_GPIOF, RCC_APB2Periph_GPIOG, RCC_APB2Periph_ADC1,
+ *          RCC_APB2Periph_ADC2, RCC_APB2Periph_TIM1, RCC_APB2Periph_SPI1,
+ *          RCC_APB2Periph_TIM8, RCC_APB2Periph_USART1, RCC_APB2Periph_ADC3,
+ *          RCC_APB2Periph_TIM15, RCC_APB2Periph_TIM16, RCC_APB2Periph_TIM17,
+ *          RCC_APB2Periph_TIM9, RCC_APB2Periph_TIM10, RCC_APB2Periph_TIM11
+ * @param  NewState: new state of the specified peripheral clock.
+ *   This parameter can be: ENABLE or DISABLE.
+ * @retval None
+ */
 void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)
 {
   /* Check the parameters */

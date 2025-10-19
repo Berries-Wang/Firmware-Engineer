@@ -3,14 +3,14 @@
 
 /**
  * 低电平启动
- * 仅使用GPIOA
+ * 按钮使用GPIOB ， LED 使用GPIOA
  */
 int main(int argc, char **argv)
 {
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 
     { // 初始化按钮
       // 启用或禁用高速APB（APB2）外设时钟
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOA, ENABLE);
 
         GPIO_InitTypeDef gpioInitTypeDef;
         gpioInitTypeDef.GPIO_Pin = GPIO_Pin_0;
@@ -24,33 +24,32 @@ int main(int argc, char **argv)
     { // 初始化LED
 
         GPIO_InitTypeDef gpioInitTypeDef_LED;
-        gpioInitTypeDef_LED.GPIO_Pin = GPIO_Pin_1;
+        gpioInitTypeDef_LED.GPIO_Pin = GPIO_Pin_0;
         gpioInitTypeDef_LED.GPIO_Speed = GPIO_Speed_50MHz;
         gpioInitTypeDef_LED.GPIO_Mode = GPIO_Mode_Out_PP; // 推挽输出
 
         // 初始化GPIOA
-        GPIO_Init(GPIOB, &gpioInitTypeDef_LED);
-        GPIO_SetBits(GPIOB, GPIO_Pin_1);
+        GPIO_Init(GPIOA, &gpioInitTypeDef_LED);
+        GPIO_SetBits(GPIOA, GPIO_Pin_0);
     }
 
     while (1)
     {
-        //  读取按钮状态
+      //  读取按钮状态
         if (0 == GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0))
         {
-            Delay_ms(10);
+            Delay_ms(20);
             // 若按键一直按下
-            while (0 == GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0))
-                ;
-            Delay_ms(10);
-
-            if (0 == GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_1))
+            while (0 == GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0));
+            Delay_ms(20);
+            
+            if (0 == GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_0))
             {
-                GPIO_SetBits(GPIOB, GPIO_Pin_1);
+                GPIO_SetBits(GPIOA, GPIO_Pin_0);
             }
             else
             {
-                GPIO_ResetBits(GPIOB, GPIO_Pin_1);
+                GPIO_ResetBits(GPIOA, GPIO_Pin_0);
             }
         }
     }

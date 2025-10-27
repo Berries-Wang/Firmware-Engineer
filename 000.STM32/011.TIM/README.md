@@ -1,0 +1,2 @@
+# TIM(定时器)
+学习:[Advanced-control timers (TIM1 and TIM8) & General-purpose timers (TIM2 to TIM5) &General-purpose timers (TIM9 to TIM14)](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)

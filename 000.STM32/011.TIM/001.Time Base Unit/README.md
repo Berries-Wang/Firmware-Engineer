@@ -14,6 +14,14 @@
 
 ![wechat_2025-10-28_070506_108.png](./../999.IMG/wechat_2025-10-28_070506_108.png)
 
+The time-base unit includes:
+- Counter register (TIMx_CNT)
+- Prescaler register (TIMx_PSC)
+- Auto-reload register (TIMx_ARR)
+- Repetition counter register (TIMx_RCR)
+
+
+
 
 ## 如何理解 'Figure 53. Counter timing diagram with prescaler division change from 1 to 2'<sup>计数器时序图：预分频器分频比从1变为2时的变化</sup>
 > 这个得学完时基单元的视频教程再来分析
@@ -29,8 +37,34 @@ counter enable bit (CEN) in TIMx_CR1 register is set （计数器由预分频器
 - Counter register(TIMx_CNT): 存储的是${CNT} ， CK_CNT 来一次脉冲，TIMx_CNT就会+1,直到大于等于ARR的值（溢出），此时会产生一次输入给RCR, 然后TIMx_CNT继续从0开始，周而复始...
 - Update event (UEV)： 更新事件，当可重复计数器的值溢出，则会产生一次Update中断或者事件。
 - Prescaler control register ： 预分频器控制寄存器，就是时基单元中的 (TIMx_PSC) 。
-- Prescaler buffer： 这应该就是类似于视频中的 影子寄存器，避免跑飞<sup>计数器的值大于阈值</sup>——不会立即生效，需要等到下一次事件产生的时候生效。
+- Prescaler buffer： 这应该就是类似于视频中的 影子寄存器，避免跑飞<sup>计数器的值大于阈值</sup>——不会立即生效，需要等到下一次事件产生的时候生效。<sub>本文搜索'The auto-reload shadow register is updated' 对比学习 </sub> 
+  + 'Prescaler buffer' 在 ·Upcounting mode (向上计数模式)· 中有介绍
 - Prescaler counter： 预分频器内部的一个计数器，是预分频器的核心组成部分，即 记满一个数(${TIMx_PSC})，则产生一次CK_CNT信号
 - TIMx_PSC 更新之前，CK_PSC 一次脉冲对应着一次CK_CNT脉冲，当TIMx_PSC更新为1生效的时候，两次CK_PSC脉冲对应着一次CK_CNT脉冲
 
+---
+
 ## Counter modes (计数器模式)
+### Upcounting mode (向上计数模式)<sup>1: UEV如何产生的?</sup>
+In upcounting mode, the counter counts from 0 to the auto-reload value (content of the
+TIMx_ARR register), then restarts from 0 and generates a counter overflow event.<sub>在向上计数模式下，计数器从0递增至自动重载值（即TIMx_ARR寄存器的数值），随后从0重新开始计数，并产生一个计数器溢出事件。</sub>,结合手册中的 图`Figure 52. Advanced-control timer block diagram`中的时基单元 和 下图 `igure 55. Counter timing diagram, internal clock divided by 1` 来分析
+![wechat_2025-10-29_072616_593.png](../999.IMG/wechat_2025-10-29_072616_593.png)
+
+If the repetition counter is used, the update event (UEV) is generated after upcounting is repeated for the number of times programmed in the repetition counter register plus one (TIMx_RCR+1). Else the update event is generated at each counter overflow.(**若启用重复计数器，更新事件(UEV)将在向上计数重复执行「重复计数器寄存器设定值加1」(TIMx_RCR+1)次后产生；否则，更新事件将在每次计数器溢出时产生)<sup>如果启用了重复计数器，那么UEV由重复计数器产生，否则由计数器在溢出时产生**</sup>
+
+Setting the UG bit in the TIMx_EGR register (by software or by using the slave mode controller) also generates an update event.<sup>软件产生的UEV的方式</sup>
+
+The UEV event can be disabled by software by setting the UDIS bit in the TIMx_CR1 register. This is to avoid updating the shadow registers while writing new values in the preload registers. Then no update event occurs until the UDIS bit has been written to 0. However, the counter restarts from 0, as well as the counter of the prescaler (but the prescale rate does not change). In addition, if the URS bit (update request selection) in TIMx_CR1 register is set, setting the UG bit generates an update event UEV but without setting the UIF flag (thus no interrupt or DMA request is sent). This is to avoid generating both update and capture interrupts when clearing the counter on the capture event. （通过设置TIMx_CR1寄存器中的UDIS位，可由软件禁止UEV事件。此机制可避免在预装载寄存器中写入新值时更新影子寄存器。在UDIS位被写回0之前，不会产生任何更新事件。但此时计数器仍会从0重新开始计数，预分频器的计数器同样会复位（但其分频比率保持不变）<sup>会复位，但是不会产生事件<sup>。 此外，若设置TIMx_CR1寄存器中的URS位（更新请求选择），此时设置UG位将生成更新事件UEV，但不会置位UIF标志（这意味着不会发送中断或DMA请求）。该设计可避免在捕获事件发生时清除计数器的同时产生更新中断和捕获中断<sup>软件产生UEV，但是没有中断，没有DMA请求,后续有场景?</sup>。）
+
+When an update event occurs, all the registers are updated and the update flag (UIF bit in TIMx_SR register) is set (depending on the URS bit):(当更新事件发生时，所有相关寄存器将被更新，并且（根据URS位的设置）更新标志位（TIMx_SR寄存器中的UIF位）会被置1)
+- The repetition counter is reloaded with the content of TIMx_RCR register,
+- The auto-reload shadow register is updated with the preload value (TIMx_ARR)<sup>使用预加载值来更新自动重装影子寄存器的值</sup>
+- The buffer of the prescaler is reloaded with the preload value (content of the TIMx_PSC register).
+
+### Downcounting mode（向下计数）
+
+
+
+
+## 缩写
+- ARPE： auto-reload preload enable bit (ARPE) in TIMx_CR1 register

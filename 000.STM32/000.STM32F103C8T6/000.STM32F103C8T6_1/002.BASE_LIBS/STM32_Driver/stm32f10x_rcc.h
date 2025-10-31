@@ -644,12 +644,12 @@ typedef struct
   */
 
 void RCC_DeInit(void);
-void RCC_HSEConfig(uint32_t RCC_HSE);
+void RCC_HSEConfig(uint32_t RCC_HSE); // HSE 开关
 ErrorStatus RCC_WaitForHSEStartUp(void);
 void RCC_AdjustHSICalibrationValue(uint8_t HSICalibrationValue);
-void RCC_HSICmd(FunctionalState NewState);
+void RCC_HSICmd(FunctionalState NewState); // HSI 开关
 void RCC_PLLConfig(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul);
-void RCC_PLLCmd(FunctionalState NewState);
+void RCC_PLLCmd(FunctionalState NewState); // PLL 开关
 
 #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL) || defined (STM32F10X_CL)
  void RCC_PREDIV1Config(uint32_t RCC_PREDIV1_Source, uint32_t RCC_PREDIV1_Div);

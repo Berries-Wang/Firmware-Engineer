@@ -46,7 +46,7 @@ int main(int argc, char **argv)
         exti_init_config.EXTI_Line = EXTI_Line0; // 这个得查阅资料了: 000.STM32/008.STM32-异常/003.STM32异常之EXTI.md#0.2.5 External interrupt/event line mapping
         exti_init_config.EXTI_Mode = EXTI_Mode_Interrupt;
         exti_init_config.EXTI_Trigger = EXTI_Trigger_Rising_Falling; // 上升沿和下降沿都触发
-        exti_init_config.EXTI_LineCmd = ENABLE;
+        exti_init_config.EXTI_LineCmd = ENABLE; // 连通中断源与NVIC之间的通道，只有连通了，中断才能传递到NVIC
         EXTI_Init(&exti_init_config);
     }
 
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
         /**
          * 参考: 000.STM32/008.STM32-异常/002.Cortex-M之NVIC.md ## Priority grouping
          * 
-         * nvic_init_config.NVIC_IRQChannelPreemptionPriority  这个是设置该中断的抢占优先级吗?
+         * nvic_init_config.NVIC_IRQChannelPreemptionPriority 设置抢占优先级
          */
         nvic_init_config.NVIC_IRQChannelPreemptionPriority = 1;
         nvic_init_config.NVIC_IRQChannelSubPriority = 1;

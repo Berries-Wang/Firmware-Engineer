@@ -16,12 +16,19 @@
 ## Clock Tree 解析
 ![Figure 8. Clock tree](./999.IMGS/20251020165659.jpg)
 
-
 ### 为什么要外接晶振(HSE)
 内部时钟源精度不高，
 
+### OSC_IN OSC_OUT
+- OSC: Oscillator (振荡器)
+
+阅读:[000.OSC_IN-OSC_OUT.md](./000.OSC_IN-OSC_OUT.md)
+
+
+
 ### 为什么存在多个时钟源
 - 频率越高，能耗也越高；频率低，也就节能；-- 任务不多，则低频率；任务多，则高频率;
+- 即 适配各种不同的场景
 
 ## RCC 操作API
 - [000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/002.BASE_LIBS/STM32_Driver/stm32f10x_rcc.h](../../000.STM32/000.STM32F103C8T6/000.STM32F103C8T6_1/002.BASE_LIBS/STM32_Driver/stm32f10x_rcc.h)

@@ -14,7 +14,7 @@
 
 
 ## Clock Tree 解析
-![Figure 8. Clock tree](./999.IMGS/20251020165659.jpg)
+![Figure 8. Clock tree](./999.IMGS/wechat_2025-11-01_103033_820.png)
 
 ### 为什么要外接晶振(HSE)
 内部时钟源精度不高，

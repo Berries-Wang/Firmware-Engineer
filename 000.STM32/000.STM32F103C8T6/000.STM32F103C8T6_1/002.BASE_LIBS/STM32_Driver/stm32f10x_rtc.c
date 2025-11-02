@@ -125,7 +125,7 @@ void RTC_ExitConfigMode(void)
 }
 
 /**
-  * @brief  Gets the RTC counter value.
+  * @brief  Gets the RTC counter value.()
   * @param  None
   * @retval RTC counter value.
   */

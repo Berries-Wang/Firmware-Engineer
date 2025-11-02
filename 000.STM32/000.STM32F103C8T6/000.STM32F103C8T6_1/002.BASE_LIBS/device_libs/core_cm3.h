@@ -1690,6 +1690,8 @@ static __INLINE void NVIC_DecodePriority (uint32_t Priority, uint32_t PriorityGr
  * Initialise the system tick timer and its interrupt and start the
  * system tick timer / counter in free running mode to generate 
  * periodical interrupts.
+ * 中断频率 (Hz) = SysTick时钟频率 / (RELOAD值 + 1)
+ * SysTick_Handler 执行频率
  */
 static __INLINE uint32_t SysTick_Config(uint32_t ticks)
 { 

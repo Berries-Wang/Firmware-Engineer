@@ -60,6 +60,9 @@ extern "C"
                                 Auto-Reload Register at the next update event.
                                 This parameter must be a number between 0x0000 and 0xFFFF.  */
 
+      /**
+       * 输入捕获时的配置
+       */
       uint16_t TIM_ClockDivision; /*!< Specifies the clock division.
                                       This parameter can be a value of @ref TIM_Clock_Division_CKD */
 
@@ -90,7 +93,7 @@ extern "C"
                                       @note This parameter is valid only for TIM1 and TIM8. */
 
       uint16_t TIM_Pulse; /*!< Specifies the pulse value to be loaded into the Capture Compare Register.
-                               This parameter can be a number between 0x0000 and 0xFFFF */
+                               This parameter can be a number between 0x0000 and 0xFFFF,即 CCR 的值 */
 
       uint16_t TIM_OCPolarity; /*!< Specifies the output polarity.
                                     This parameter can be a value of @ref TIM_Output_Compare_Polarity */
@@ -1050,6 +1053,9 @@ extern "C"
     */
 
    void TIM_DeInit(TIM_TypeDef *TIMx);
+   /**
+    * 配置时基单元
+    */
    void TIM_TimeBaseInit(TIM_TypeDef *TIMx, TIM_TimeBaseInitTypeDef *TIM_TimeBaseInitStruct);
    /**
     * OC (Output Compare) 配置
@@ -1058,7 +1064,9 @@ extern "C"
    void TIM_OC2Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct);
    void TIM_OC3Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct);
    void TIM_OC4Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct);
-   
+   /**
+    * IC (Input Capture) 输入捕获
+    */
    void TIM_ICInit(TIM_TypeDef *TIMx, TIM_ICInitTypeDef *TIM_ICInitStruct);
    void TIM_PWMIConfig(TIM_TypeDef *TIMx, TIM_ICInitTypeDef *TIM_ICInitStruct);
    void TIM_BDTRConfig(TIM_TypeDef *TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct);

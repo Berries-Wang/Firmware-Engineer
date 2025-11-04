@@ -32,7 +32,7 @@ int main(int argc, char **argv)
         // Step1. 配置时基单元
         TIM_TimeBaseInitTypeDef timeBaseInitConfig;
         /**
-         * CK_CNT = 72MHZ/(7200-1+1)=1KHZ 即 1000HZ，即时钟周期为1ms
+         * CK_CNT = 72MHZ/(720-1+1)=1KHZ 即 10000HZ，即时钟周期为1ms
          */
         timeBaseInitConfig.TIM_Prescaler = (720 - 1);
         timeBaseInitConfig.TIM_CounterMode = TIM_CounterMode_Up; // 向上计数
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
         TIM_TimeBaseInit(TIM1, &timeBaseInitConfig);
     }
 
-    { // 配置输出比较
+    { // 配置输入比较，需要针对于定时器的通道来进行配置
         TIM_OCInitTypeDef timeOCInitConfig;
         timeOCInitConfig.TIM_OCMode = TIM_OCMode_PWM1;               // 输出PWM波形
         timeOCInitConfig.TIM_OutputState = TIM_OutputState_Enable;   // 正常输出
@@ -54,31 +54,13 @@ int main(int argc, char **argv)
         timeOCInitConfig.TIM_OCNIdleState = TIM_OCIdleState_Reset;
         TIM_OC1Init(TIM1, &timeOCInitConfig);
     }
-    { // 查表，配置GPIO
-        GPIO_InitTypeDef gpioBInitConfig;
-        gpioBInitConfig.GPIO_Pin = GPIO_Pin_8;
-        gpioBInitConfig.GPIO_Speed = GPIO_Speed_50MHz;
-        gpioBInitConfig.GPIO_Mode = GPIO_Mode_AF_PP;
-        GPIO_Init(GPIOA, &gpioBInitConfig);
-
-        gpioBInitConfig.GPIO_Pin = GPIO_Pin_13;
-        GPIO_Init(GPIOB, &gpioBInitConfig);
-    }
-
-    TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
     // 开启定时器
     TIM_Cmd(TIM1, ENABLE);
 
     for (;;)
     {
-        // 呼吸灯占空比公式: duty = 0.5*sin(2 * π * t)+0.5 ， 这就是数学的魅力了
-        float rtc_count = get_SysTick() * 0.001;
-        float duty = 0.5 * sin(2 * 3.14 * rtc_count) + 0.5;
-        // 获取ARR的值: TIM1->ARR; -> 计算CCR的值
-        uint16_t ccr_new = duty * (TIM1->ARR + 1);
-        // 写回到CCR寄存器
-        TIM_SetCompare1(TIM1, ccr_new);
+       
     }
 
     return 0;

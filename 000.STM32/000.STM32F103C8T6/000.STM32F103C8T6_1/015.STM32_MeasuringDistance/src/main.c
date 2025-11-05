@@ -42,17 +42,14 @@ int main(int argc, char **argv)
         TIM_TimeBaseInit(TIM1, &timeBaseInitConfig);
     }
 
-    { // 配置输入比较，需要针对于定时器的通道来进行配置
-        TIM_OCInitTypeDef timeOCInitConfig;
-        timeOCInitConfig.TIM_OCMode = TIM_OCMode_PWM1;               // 输出PWM波形
-        timeOCInitConfig.TIM_OutputState = TIM_OutputState_Enable;   // 正常输出
-        timeOCInitConfig.TIM_OutputNState = TIM_OutputNState_Enable; // 互补输出
-        timeOCInitConfig.TIM_Pulse = 90;
-        timeOCInitConfig.TIM_OCPolarity = TIM_OCPolarity_High;
-        timeOCInitConfig.TIM_OCNPolarity = TIM_OCNPolarity_High;
-        timeOCInitConfig.TIM_OCIdleState = TIM_OCIdleState_Reset;
-        timeOCInitConfig.TIM_OCNIdleState = TIM_OCIdleState_Reset;
-        TIM_OC1Init(TIM1, &timeOCInitConfig);
+    { // 配置输入捕获，需要针对于定时器的通道来进行配置
+        TIM_ICInitTypeDef icInitConfig;
+        icInitConfig.TIM_Channel = TIM_Channel_1;
+        icInitConfig.TIM_ICPolarity = TIM_ICPolarity_Rising;
+        icInitConfig.TIM_ICSelection = TIM_ICSelection_DirectTI;
+        icInitConfig.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+        icInitConfig.TIM_ICFilter = 0x0C;
+        TIM_ICInit(TIM1, );
     }
 
     // 开启定时器

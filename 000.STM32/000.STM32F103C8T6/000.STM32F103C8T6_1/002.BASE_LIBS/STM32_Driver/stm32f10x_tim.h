@@ -569,9 +569,9 @@ extern "C"
     * @{
     */
 
-#define TIM_ICSelection_DirectTI ((uint16_t)0x0001)   /*!< TIM Input 1, 2, 3 or 4 is selected to be \
+#define TIM_ICSelection_DirectTI ((uint16_t)0x0001)   /*!< 直接: TIM Input 1, 2, 3 or 4 is selected to be \
                                                            connected to IC1, IC2, IC3 or IC4, respectively */
-#define TIM_ICSelection_IndirectTI ((uint16_t)0x0002) /*!< TIM Input 1, 2, 3 or 4 is selected to be \
+#define TIM_ICSelection_IndirectTI ((uint16_t)0x0002) /*!< 间接: TIM Input 1, 2, 3 or 4 is selected to be \
                                                            connected to IC2, IC1, IC4 or IC3, respectively. */
 #define TIM_ICSelection_TRC ((uint16_t)0x0003)        /*!< TIM Input 1, 2, 3 or 4 is selected to be connected to TRC. */
 #define IS_TIM_IC_SELECTION(SELECTION) (((SELECTION) == TIM_ICSelection_DirectTI) ||   \

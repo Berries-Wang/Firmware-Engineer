@@ -20,8 +20,8 @@ int main(int argc, char **argv)
     {
         // 配置时钟来源: 这个还是得根据“Figure 8. Clock tree”来配置
         SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
-        // 设置重载值 
-        SysTick_Config(72*100);
+        // 设置重载值
+        SysTick_Config(72 * 100);
         NVIC_SetPriority(SysTick_IRQn, -1);
     }
 
@@ -40,6 +40,8 @@ int main(int argc, char **argv)
         timeBaseInitConfig.TIM_ClockDivision = TIM_CKD_DIV1;
         timeBaseInitConfig.TIM_RepetitionCounter = 0; // 重复计数器的值
         TIM_TimeBaseInit(TIM1, &timeBaseInitConfig);
+        // 打开ARR寄存器的预加载功能
+        TIM_ARRPreloadConfig(TIM1, ENABLE);
     }
 
     { // 配置输出比较

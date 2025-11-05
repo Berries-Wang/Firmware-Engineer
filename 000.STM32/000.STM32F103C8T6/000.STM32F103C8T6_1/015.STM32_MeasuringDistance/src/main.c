@@ -11,6 +11,9 @@ void init_HSE_RCC();
 void init_RCC_from_HSE();
 /**
  * 使用定时器输出比较功能产生PWM波形，实现呼吸灯功能
+ * 
+ * PA8: TIM1_CH1
+ * PA9: TIM1_CH2
  */
 int main(int argc, char **argv)
 {
@@ -20,26 +23,36 @@ int main(int argc, char **argv)
     {
         // 配置时钟来源: 这个还是得根据“Figure 8. Clock tree”来配置
         SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
-        // 设置重载值 
-        SysTick_Config(72*100);
+        // 设置重载值
+        SysTick_Config(72 * 100);
         NVIC_SetPriority(SysTick_IRQn, -1);
     }
 
     // 通过阅读手册：[stm32f103c8.pdf]#`Figure 1. STM32F103xx performance line block diagram`，TIM1挂载在APB2总线上，因此需要使能APB2总线时钟
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_TIM1, ENABLE);
 
+    // 初始化GPIO
+    {
+        GPIO_InitTypeDef gpioInitConfig;
+        gpioInitConfig.GPIO_Pin = GPIO_Pin_9;
+        gpioInitConfig.GPIO_Mode = GPIO_Mode_IPD;
+        GPIO_Init(GPIOA, gpioInitConfig);
+    }
+
     { // 配置定时器TIM
         // Step1. 配置时基单元
         TIM_TimeBaseInitTypeDef timeBaseInitConfig;
         /**
-         * CK_CNT = 72MHZ/(720-1+1)=1KHZ 即 10000HZ，即时钟周期为1ms
+         * CK_CNT = 72MHZ/(72-1+1)=1KHZ 即 1000000HZ，即时钟周期为1us
          */
-        timeBaseInitConfig.TIM_Prescaler = (720 - 1);
+        timeBaseInitConfig.TIM_Prescaler = (72 - 1);
         timeBaseInitConfig.TIM_CounterMode = TIM_CounterMode_Up; // 向上计数
-        timeBaseInitConfig.TIM_Period = (100 - 1);               // 设置自动重装计数器
+        timeBaseInitConfig.TIM_Period = (65535 - 1);               // 设置自动重装计数器
         timeBaseInitConfig.TIM_ClockDivision = TIM_CKD_DIV1;
         timeBaseInitConfig.TIM_RepetitionCounter = 0; // 重复计数器的值
         TIM_TimeBaseInit(TIM1, &timeBaseInitConfig);
+        // 打开ARR寄存器的预加载功能
+        TIM_ARRPreloadConfig(TIM1 , ENABLE);
     }
 
     { // 配置输入捕获，需要针对于定时器的通道来进行配置
@@ -49,7 +62,14 @@ int main(int argc, char **argv)
         icInitConfig.TIM_ICSelection = TIM_ICSelection_DirectTI;
         icInitConfig.TIM_ICPrescaler = TIM_ICPSC_DIV1;
         icInitConfig.TIM_ICFilter = 0x0C;
-        TIM_ICInit(TIM1, );
+        // 初始化通道1
+        TIM_ICInit(TIM1, &icInitConfig);
+
+        // 初始化与通道1相互引用的通道2,但是通道2需要设置为间接
+        icInitConfig.TIM_Channel = TIM_Channel_2;
+        icInitConfig.TIM_ICPolarity = TIM_ICPolarity_Falling; // 记录反射回来的时候的值
+        icInitConfig.TIM_ICSelection = TIM_ICSelection_IndirectTI;
+        TIM_ICInit(TIM1, &icInitConfig);
     }
 
     // 开启定时器
@@ -57,7 +77,30 @@ int main(int argc, char **argv)
 
     for (;;)
     {
-       
+        // 重置CCR寄存器(俩都要)
+        TIM_SetCompare1(TIM1, 0);
+        TIM_SetCompare2(TIM1, 0);
+
+        // 发射10us的脉冲
+        GPIO_SetBits(GPIOA, GPIO_Pin_9);
+        /**
+         * for执行一次，需要消耗8个指令周期
+         */
+        for (uint8_t i = 0; i < 10; i++);
+        // 脉冲发射完毕
+        GPIO_ResetBits(GPIOA, GPIO_Pin_9);
+
+        // 等待发射&回应
+        uint8_t success = 0;
+        uint16_t ccr1_val = 0, ccr2_val = 0;
+        for (;;)
+        {
+            
+        }
+
+        // 测试举例，若小于20cm，则LED点亮
+
+        // 开始下一轮测距
     }
 
     return 0;

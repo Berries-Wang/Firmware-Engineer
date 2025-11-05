@@ -1077,7 +1077,17 @@ extern "C"
    void TIM_OCStructInit(TIM_OCInitTypeDef *TIM_OCInitStruct);
    void TIM_ICStructInit(TIM_ICInitTypeDef *TIM_ICInitStruct);
    void TIM_BDTRStructInit(TIM_BDTRInitTypeDef *TIM_BDTRInitStruct);
+
+   /**
+    * 打开定时器
+    */
    void TIM_Cmd(TIM_TypeDef *TIMx, FunctionalState NewState);
+
+   /**
+    * 使能或失能TIM外设定时器主输出
+    *   使能：开启定时器的主输出功能，允许PWM信号从引脚输出
+    *   失能：关闭输出，引脚保持无效状态
+    */
    void TIM_CtrlPWMOutputs(TIM_TypeDef *TIMx, FunctionalState NewState);
    /**
     * 使能终端输出
@@ -1105,7 +1115,12 @@ extern "C"
    void TIM_ForcedOC2Config(TIM_TypeDef *TIMx, uint16_t TIM_ForcedAction);
    void TIM_ForcedOC3Config(TIM_TypeDef *TIMx, uint16_t TIM_ForcedAction);
    void TIM_ForcedOC4Config(TIM_TypeDef *TIMx, uint16_t TIM_ForcedAction);
+   
+   /**
+    * 使能ARR寄存器的预加载功能
+    */
    void TIM_ARRPreloadConfig(TIM_TypeDef *TIMx, FunctionalState NewState);
+   
    void TIM_SelectCOM(TIM_TypeDef *TIMx, FunctionalState NewState);
    void TIM_SelectCCDMA(TIM_TypeDef *TIMx, FunctionalState NewState);
    void TIM_CCPreloadControl(TIM_TypeDef *TIMx, FunctionalState NewState);
@@ -1139,16 +1154,27 @@ extern "C"
    void TIM_SelectSlaveMode(TIM_TypeDef *TIMx, uint16_t TIM_SlaveMode);
    void TIM_SelectMasterSlaveMode(TIM_TypeDef *TIMx, uint16_t TIM_MasterSlaveMode);
    void TIM_SetCounter(TIM_TypeDef *TIMx, uint16_t Counter);
+   /**
+    * 
+    */
    void TIM_SetAutoreload(TIM_TypeDef *TIMx, uint16_t Autoreload);
+   
+   /**
+    * 设置CCR的值
+    */
    void TIM_SetCompare1(TIM_TypeDef *TIMx, uint16_t Compare1);
    void TIM_SetCompare2(TIM_TypeDef *TIMx, uint16_t Compare2);
    void TIM_SetCompare3(TIM_TypeDef *TIMx, uint16_t Compare3);
    void TIM_SetCompare4(TIM_TypeDef *TIMx, uint16_t Compare4);
+
    void TIM_SetIC1Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
    void TIM_SetIC2Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
    void TIM_SetIC3Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
    void TIM_SetIC4Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
    void TIM_SetClockDivision(TIM_TypeDef *TIMx, uint16_t TIM_CKD);
+   /**
+    * 获取CCR寄存器的值
+    */
    uint16_t TIM_GetCapture1(TIM_TypeDef *TIMx);
    uint16_t TIM_GetCapture2(TIM_TypeDef *TIMx);
    uint16_t TIM_GetCapture3(TIM_TypeDef *TIMx);

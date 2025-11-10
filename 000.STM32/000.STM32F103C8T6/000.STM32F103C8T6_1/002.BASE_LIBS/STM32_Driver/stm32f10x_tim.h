@@ -1167,10 +1167,17 @@ extern "C"
    void TIM_SetCompare3(TIM_TypeDef *TIMx, uint16_t Compare3);
    void TIM_SetCompare4(TIM_TypeDef *TIMx, uint16_t Compare4);
 
+   /**
+    * 设置输入比较第四阶段的分频系数
+    * (000.STM32/011.TIM/003.Input-Capture/README.md)
+    */
    void TIM_SetIC1Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
    void TIM_SetIC2Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
    void TIM_SetIC3Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
    void TIM_SetIC4Prescaler(TIM_TypeDef *TIMx, uint16_t TIM_ICPSC);
+   /**
+    * 设置f(DTS)的分频系数
+    */
    void TIM_SetClockDivision(TIM_TypeDef *TIMx, uint16_t TIM_CKD);
    /**
     * 获取CCR寄存器的值

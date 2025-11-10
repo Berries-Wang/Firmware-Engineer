@@ -2339,7 +2339,7 @@ void TIM_SetCompare4(TIM_TypeDef* TIMx, uint16_t Compare4)
 }
 
 /**
-  * @brief  Sets the TIMx Input Capture 1 prescaler.
+  * @brief  Sets the TIMx Input Capture 1 prescaler.(设置通道输入比较第四阶段的分频系数:000.STM32/011.TIM/003.Input-Capture/README.md)
   * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
   * @param  TIM_ICPSC: specifies the Input Capture1 prescaler new value.
   *   This parameter can be one of the following values:
@@ -2427,7 +2427,7 @@ void TIM_SetIC4Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 }
 
 /**
-  * @brief  Sets the TIMx Clock Division value.
+  * @brief  Sets the TIMx Clock Division value. (设置 f(DTS)分频系数，见000.STM32/011.TIM/003.Input-Capture/README.md)
   * @param  TIMx: where x can be  1 to 17 except 6 and 7 to select 
   *   the TIM peripheral.
   * @param  TIM_CKD: specifies the clock division value.

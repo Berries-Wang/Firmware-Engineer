@@ -11,7 +11,7 @@ void init_HSE_RCC();
 void init_RCC_from_HSE();
 /**
  * 使用定时器输出比较功能产生PWM波形，实现呼吸灯功能
- * 
+ *
  * PA8: TIM1_CH1
  * PA9: TIM1_CH2
  */
@@ -29,17 +29,31 @@ int main(int argc, char **argv)
     }
 
     // 通过阅读手册：[stm32f103c8.pdf]#`Figure 1. STM32F103xx performance line block diagram`，TIM1挂载在APB2总线上，因此需要使能APB2总线时钟
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_TIM1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_TIM1 | RCC_APB2Periph_AFIO, ENABLE);
+
+    { // channel 初始化
+        GPIO_InitTypeDef gpioBInitConfig;
+        gpioBInitConfig.GPIO_Pin = GPIO_Pin_8;
+        gpioBInitConfig.GPIO_Speed = GPIO_Speed_50MHz;
+        gpioBInitConfig.GPIO_Mode = GPIO_Mode_IPD;
+        GPIO_Init(GPIOA, &gpioBInitConfig);
+        // 禁用霍尔模式
+        TIM_SelectHallSensor(TIM1, DISABLE);
+    }
 
     // 初始化GPIO
-    { // PB9 接LED
+    { // PB9 接LED PB8接Trig
         GPIO_InitTypeDef gpioInitConfig;
-        gpioInitConfig.GPIO_Pin = GPIO_Pin_9;
-        gpioInitConfig.GPIO_Mode = GPIO_Mode_IPD;
-        GPIO_Init(GPIOB, gpioInitConfig);
+        gpioInitConfig.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8;
+        gpioInitConfig.GPIO_Mode = GPIO_Mode_Out_PP;
+        gpioInitConfig.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_Init(GPIOB, &gpioInitConfig);
+        // 先把灯点亮
+        GPIO_SetBits(GPIOB, GPIO_Pin_9);
     }
 
     { // 配置定时器TIM
+        TIM_SetClockDivision(TIM1, TIM_CKD_DIV1);
         // Step1. 配置时基单元
         TIM_TimeBaseInitTypeDef timeBaseInitConfig;
         /**
@@ -47,12 +61,12 @@ int main(int argc, char **argv)
          */
         timeBaseInitConfig.TIM_Prescaler = (72 - 1);
         timeBaseInitConfig.TIM_CounterMode = TIM_CounterMode_Up; // 向上计数
-        timeBaseInitConfig.TIM_Period = (65535 - 1);               // 设置自动重装计数器
+        timeBaseInitConfig.TIM_Period = (65535 - 1);             // 设置自动重装计数器
         timeBaseInitConfig.TIM_ClockDivision = TIM_CKD_DIV1;
         timeBaseInitConfig.TIM_RepetitionCounter = 0; // 重复计数器的值
         TIM_TimeBaseInit(TIM1, &timeBaseInitConfig);
         // 打开ARR寄存器的预加载功能
-        TIM_ARRPreloadConfig(TIM1 , ENABLE);
+        TIM_ARRPreloadConfig(TIM1, ENABLE);
     }
 
     { // 配置输入捕获，需要针对于定时器的通道来进行配置
@@ -72,6 +86,9 @@ int main(int argc, char **argv)
         TIM_ICInit(TIM1, &icInitConfig);
     }
 
+    TIM_CCxCmd(TIM1, TIM_Channel_1, TIM_CCx_Enable);
+    TIM_CCxCmd(TIM1, TIM_Channel_2, TIM_CCx_Enable);
+
     // 开启定时器
     TIM_Cmd(TIM1, ENABLE);
 
@@ -82,13 +99,14 @@ int main(int argc, char **argv)
         TIM_SetCompare2(TIM1, 0);
 
         // 发射10us的脉冲
-        GPIO_SetBits(GPIOA, GPIO_Pin_9);
+        GPIO_SetBits(GPIOB, GPIO_Pin_8);
         /**
          * for执行一次，需要消耗8个指令周期
          */
-        for (uint8_t i = 0; i < 10; i++);
+        for (uint8_t i = 0; i < 10; i++)
+            ;
         // 脉冲发射完毕
-        GPIO_ResetBits(GPIOA, GPIO_Pin_9);
+        GPIO_ResetBits(GPIOB, GPIO_Pin_8);
 
         // 等待发射&回应
         uint8_t success = 0;
@@ -105,18 +123,17 @@ int main(int argc, char **argv)
             if (success)
             {
                 // 距离(cm) = (ccr2_val - ccr1_val) * (脉宽) * 340*100 /2 , 脉宽为1us
-               uint16_t distance_cm =  (ccr2_val-ccr1_val)*(1/1000/1000)*340*100 / 2;
-               // 如果距离小于20cm，则亮灯
-               if (distance_cm <= 30)
-               {
-                   GPIO_SetBits(GPIOB, GPIO_Pin_9);
-               }
-               else
-               { // 超过了，那么不亮了
-                   GPIO_ResetBits(GPIOB, GPIO_Pin_9);
-               }
+                uint16_t distance_cm = (ccr2_val - ccr1_val) * (1 / 1000 / 1000) * 340 * 100 / 2;
+                // 如果距离小于20cm，则亮灯
+                if (distance_cm <= 30)
+                {
+                    GPIO_SetBits(GPIOB, GPIO_Pin_9);
+                }
+                else
+                { // 超过了，那么不亮了
+                    GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+                }
             }
-            
         }
     }
 

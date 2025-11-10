@@ -4,7 +4,8 @@
     "*.java": "java",
     "*.h": "c",
     "*.c": "c",
-    "compare": "c"
+    "compare": "c",
+    "iterator": "c"
   },
   /*OpenOCD路径*/
   "cortex-debug.openocdPath": "${workspaceFolder}/000.STM32/003.OpenOCD/OpenOCD-INSTALL-DIR/001.EPREFIX/bin/openocd",

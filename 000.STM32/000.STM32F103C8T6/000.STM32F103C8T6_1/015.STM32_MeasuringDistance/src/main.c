@@ -32,11 +32,11 @@ int main(int argc, char **argv)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_TIM1, ENABLE);
 
     // 初始化GPIO
-    {
+    { // PB9 接LED
         GPIO_InitTypeDef gpioInitConfig;
         gpioInitConfig.GPIO_Pin = GPIO_Pin_9;
         gpioInitConfig.GPIO_Mode = GPIO_Mode_IPD;
-        GPIO_Init(GPIOA, gpioInitConfig);
+        GPIO_Init(GPIOB, gpioInitConfig);
     }
 
     { // 配置定时器TIM
@@ -95,12 +95,29 @@ int main(int argc, char **argv)
         uint16_t ccr1_val = 0, ccr2_val = 0;
         for (;;)
         {
+            // 获取ccr1 ccr2的值
+            ccr1_val = TIM_GetCapture1(TIM1);
+            ccr2_val = TIM_GetCapture2(TIM1);
+            if (ccr1_val > 0 && ccr2_val > 0)
+            {
+                success = 1;
+            }
+            if (success)
+            {
+                // 距离(cm) = (ccr2_val - ccr1_val) * (脉宽) * 340*100 /2 , 脉宽为1us
+               uint16_t distance_cm =  (ccr2_val-ccr1_val)*(1/1000/1000)*340*100 / 2;
+               // 如果距离小于20cm，则亮灯
+               if (distance_cm <= 30)
+               {
+                   GPIO_SetBits(GPIOB, GPIO_Pin_9);
+               }
+               else
+               { // 超过了，那么不亮了
+                   GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+               }
+            }
             
         }
-
-        // 测试举例，若小于20cm，则LED点亮
-
-        // 开始下一轮测距
     }
 
     return 0;

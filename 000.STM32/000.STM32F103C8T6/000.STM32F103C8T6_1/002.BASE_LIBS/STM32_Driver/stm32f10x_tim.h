@@ -61,9 +61,10 @@ extern "C"
                                 This parameter must be a number between 0x0000 and 0xFFFF.  */
 
       /**
-       * 输入捕获时的配置
+       * 输入捕获时的配置 ，　配置输入滤波
+       * 
        */
-      uint16_t TIM_ClockDivision; /*!< Specifies the clock division.
+      uint16_t TIM_ClockDivision; /*!< Specifies the clock division. （指定时钟分频）
                                       This parameter can be a value of @ref TIM_Clock_Division_CKD */
 
       uint8_t TIM_RepetitionCounter; /*!< Specifies the repetition counter value. Each time the RCR downcounter
@@ -118,20 +119,37 @@ extern "C"
    typedef struct
    {
 
-      uint16_t TIM_Channel; /*!< Specifies the TIM channel.
-                                 This parameter can be a value of @ref TIM_Channel */
+       /**
+        * Specifies the TIM channel.   This parameter can be a value of @ref TIM_Channel
+        * 配置输入通道
+        */
+       uint16_t TIM_Channel;
 
-      uint16_t TIM_ICPolarity; /*!< Specifies the active edge of the input signal.
-                                    This parameter can be a value of @ref TIM_Input_Capture_Polarity */
+       /**
+        * Specifies the active edge of the input signal. This parameter can be a value of @ref TIM_Input_Capture_Polarity
+        * (指定输入信号的有效边沿)
+        * > 即 配置边沿检测,上升沿/下降沿
+        */
+       uint16_t TIM_ICPolarity;
 
-      uint16_t TIM_ICSelection; /*!< Specifies the input.
-                                     This parameter can be a value of @ref TIM_Input_Capture_Selection */
+       /**
+        * Specifies the input. This parameter can be a value of @ref TIM_Input_Capture_Selection
+        * 
+        * 直接选择/间接选择
+        */
+       uint16_t TIM_ICSelection;
 
-      uint16_t TIM_ICPrescaler; /*!< Specifies the Input Capture Prescaler.
-                                     This parameter can be a value of @ref TIM_Input_Capture_Prescaler */
+       /**
+        * Specifies the Input Capture Prescaler. This parameter can be a value of @ref TIM_Input_Capture_Prescaler
+        */
+       uint16_t TIM_ICPrescaler;
 
-      uint16_t TIM_ICFilter; /*!< Specifies the input capture filter.
-                                  This parameter can be a number between 0x0 and 0xF */
+       /**
+        * (指定输入捕获滤波器。该参数取值范围为0x0至0xF)
+        * Specifies the input capture filter. This parameter can be a number between 0x0 and 0xF
+        */
+       uint16_t TIM_ICFilter;
+
    } TIM_ICInitTypeDef;
 
    /**
@@ -1090,7 +1108,7 @@ extern "C"
     */
    void TIM_CtrlPWMOutputs(TIM_TypeDef *TIMx, FunctionalState NewState);
    /**
-    * 使能终端输出
+    * 使能中断输出
     */
    void TIM_ITConfig(TIM_TypeDef *TIMx, uint16_t TIM_IT, FunctionalState NewState);
    void TIM_GenerateEvent(TIM_TypeDef *TIMx, uint16_t TIM_EventSource);
@@ -1143,6 +1161,9 @@ extern "C"
    void TIM_OC3PolarityConfig(TIM_TypeDef *TIMx, uint16_t TIM_OCPolarity);
    void TIM_OC3NPolarityConfig(TIM_TypeDef *TIMx, uint16_t TIM_OCNPolarity);
    void TIM_OC4PolarityConfig(TIM_TypeDef *TIMx, uint16_t TIM_OCPolarity);
+   /**
+    * 
+    */
    void TIM_CCxCmd(TIM_TypeDef *TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx);
    void TIM_CCxNCmd(TIM_TypeDef *TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN);
    void TIM_SelectOCxM(TIM_TypeDef *TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode);
@@ -1188,6 +1209,9 @@ extern "C"
    uint16_t TIM_GetCapture4(TIM_TypeDef *TIMx);
    uint16_t TIM_GetCounter(TIM_TypeDef *TIMx);
    uint16_t TIM_GetPrescaler(TIM_TypeDef *TIMx);
+   /**
+    * 读取标识位
+    */
    FlagStatus TIM_GetFlagStatus(TIM_TypeDef *TIMx, uint16_t TIM_FLAG);
    void TIM_ClearFlag(TIM_TypeDef *TIMx, uint16_t TIM_FLAG);
    ITStatus TIM_GetITStatus(TIM_TypeDef *TIMx, uint16_t TIM_IT);

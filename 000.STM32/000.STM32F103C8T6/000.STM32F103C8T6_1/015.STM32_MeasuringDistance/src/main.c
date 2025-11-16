@@ -6,6 +6,7 @@
 #include <math.h>
 #include "stm32f10x_rtc.h"
 #include "stm32f10x_it.h"
+#include "Delay.h"
 
 void init_HSE_RCC();
 void init_RCC_from_HSE();
@@ -31,110 +32,136 @@ int main(int argc, char **argv)
     // 通过阅读手册：[stm32f103c8.pdf]#`Figure 1. STM32F103xx performance line block diagram`，TIM1挂载在APB2总线上，因此需要使能APB2总线时钟
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_TIM1 | RCC_APB2Periph_AFIO, ENABLE);
 
-    { // channel 初始化
-        GPIO_InitTypeDef gpioBInitConfig;
-        gpioBInitConfig.GPIO_Pin = GPIO_Pin_8;
-        gpioBInitConfig.GPIO_Speed = GPIO_Speed_50MHz;
-        gpioBInitConfig.GPIO_Mode = GPIO_Mode_IPD;
-        GPIO_Init(GPIOA, &gpioBInitConfig);
-        // 禁用霍尔模式
-        TIM_SelectHallSensor(TIM1, DISABLE);
+    { // 初始化GPIO口: 灯
+        GPIO_InitTypeDef gpioInitConfigPB = {
+            .GPIO_Pin = GPIO_Pin_12,
+            .GPIO_Speed = GPIO_Speed_50MHz,
+            .GPIO_Mode = GPIO_Mode_IPD,
+        };
+        GPIO_Init(GPIOB, &gpioInitConfigPB);
     }
 
-    // 初始化GPIO
-    { // PB9 接LED PB8接Trig
-        GPIO_InitTypeDef gpioInitConfig;
-        gpioInitConfig.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8;
-        gpioInitConfig.GPIO_Mode = GPIO_Mode_Out_PP;
-        gpioInitConfig.GPIO_Speed = GPIO_Speed_50MHz;
-        GPIO_Init(GPIOB, &gpioInitConfig);
-        // 先把灯点亮
-        GPIO_SetBits(GPIOB, GPIO_Pin_9);
-    }
+    { //  看手册，TIM1_CH1 对应PA8
 
-    { // 配置定时器TIM
-        TIM_SetClockDivision(TIM1, TIM_CKD_DIV1);
-        // Step1. 配置时基单元
-        TIM_TimeBaseInitTypeDef timeBaseInitConfig;
-        /**
-         * CK_CNT = 72MHZ/(72-1+1)=1KHZ 即 1000000HZ，即时钟周期为1us
-         */
-        timeBaseInitConfig.TIM_Prescaler = (72 - 1);
-        timeBaseInitConfig.TIM_CounterMode = TIM_CounterMode_Up; // 向上计数
-        timeBaseInitConfig.TIM_Period = (65535 - 1);             // 设置自动重装计数器
-        timeBaseInitConfig.TIM_ClockDivision = TIM_CKD_DIV1;
-        timeBaseInitConfig.TIM_RepetitionCounter = 0; // 重复计数器的值
-        TIM_TimeBaseInit(TIM1, &timeBaseInitConfig);
-        // 打开ARR寄存器的预加载功能
+        TIM_TimeBaseInitTypeDef timeBaseInitConfig = {
+            .TIM_Prescaler = 72 - 1,               // PSC： 预分频器,降频 , 1MHZ
+            .TIM_CounterMode = TIM_CounterMode_Up, //
+            .TIM_Period = 0xFFFF,                  // ARR
+            .TIM_ClockDivision = TIM_CKD_DIV1,     //
+            .TIM_RepetitionCounter = 0             // RCR ,目前配置输入捕获,应该不用配置吧
+        };
+        TIM_TimeBaseStructInit(&timeBaseInitConfig);
+        // 配置自动重装寄存器(ARR)的预加载功能
         TIM_ARRPreloadConfig(TIM1, ENABLE);
+
+        GPIO_InitTypeDef gpioInitConfigPA7 = {
+            // trig
+            .GPIO_Pin = GPIO_Pin_7,
+            .GPIO_Speed = GPIO_Speed_50MHz,
+            .GPIO_Mode = GPIO_Mode_Out_PP,
+        };
+        GPIO_Init(GPIOA, &gpioInitConfigPA7);
+
+        GPIO_InitTypeDef gpioInitConfigPA8 = {
+            // echo
+            .GPIO_Pin = GPIO_Pin_8,
+            .GPIO_Speed = GPIO_Speed_50MHz,
+            .GPIO_Mode = GPIO_Mode_IN_FLOATING,
+        };
+        GPIO_Init(GPIOA, &gpioInitConfigPA8);
     }
 
-    { // 配置输入捕获，需要针对于定时器的通道来进行配置
-        TIM_ICInitTypeDef icInitConfig;
-        icInitConfig.TIM_Channel = TIM_Channel_1;
-        icInitConfig.TIM_ICPolarity = TIM_ICPolarity_Rising;
-        icInitConfig.TIM_ICSelection = TIM_ICSelection_DirectTI;
-        icInitConfig.TIM_ICPrescaler = TIM_ICPSC_DIV1;
-        icInitConfig.TIM_ICFilter = 0x0C;
-        // 初始化通道1
+    { // 输入滤波: 过滤掉信号中的毛刺 -> 边沿检测 -> 信号选择 -> 分频 -> 事件(ICPS)
+
+        // 定时器1的配置: 配置为输入捕获
+
+
+        // 配置通道1
+        TIM_ICInitTypeDef icInitConfig = {
+            .TIM_Channel = TIM_Channel_1,                // 配置输入渠道
+            .TIM_ICPolarity = TIM_ICPolarity_Rising,     // 配置边沿检测
+            .TIM_ICSelection = TIM_ICSelection_DirectTI, // 配置信号选择
+            .TIM_ICPrescaler = TIM_ICPSC_DIV1,           // 配置预分频系数
+            .TIM_ICFilter = 0x0};                        // 配置输入滤波器,不滤波
         TIM_ICInit(TIM1, &icInitConfig);
 
-        // 初始化与通道1相互引用的通道2,但是通道2需要设置为间接
-        icInitConfig.TIM_Channel = TIM_Channel_2;
-        icInitConfig.TIM_ICPolarity = TIM_ICPolarity_Falling; // 记录反射回来的时候的值
-        icInitConfig.TIM_ICSelection = TIM_ICSelection_IndirectTI;
-        TIM_ICInit(TIM1, &icInitConfig);
+        // 其实还是配置通道1
+        TIM_ICInitTypeDef icInitConfig_2 = {
+            .TIM_Channel = TIM_Channel_2,                  // 配置输入渠道
+            .TIM_ICPolarity = TIM_ICPolarity_Falling,      // 配置边沿检测
+            .TIM_ICSelection = TIM_ICSelection_IndirectTI, // 配置信号选择
+            .TIM_ICPrescaler = TIM_ICPSC_DIV1,             // 配置预分频系数
+            .TIM_ICFilter = 0x0};                          // 配置输入滤波器
+        TIM_ICInit(TIM1, &icInitConfig_2);
     }
-
-    TIM_CCxCmd(TIM1, TIM_Channel_1, TIM_CCx_Enable);
-    TIM_CCxCmd(TIM1, TIM_Channel_2, TIM_CCx_Enable);
-
-    // 开启定时器
-    TIM_Cmd(TIM1, ENABLE);
 
     for (;;)
     {
-        // 重置CCR寄存器(俩都要)
-        TIM_SetCompare1(TIM1, 0);
-        TIM_SetCompare2(TIM1, 0);
+        // 向CNT值设置为0
+        TIM_SetCounter(TIM1, 0);
+
+        // 清除cc1 cc2标志位
+        TIM_ClearFlag(TIM1, TIM_FLAG_CC1);
+        TIM_ClearFlag(TIM1, TIM_FLAG_CC2);
+        // 启动定时器
+        TIM_Cmd(TIM1, ENABLE);
+        TIM_ITConfig(TIM1, TIM_IT_CC1, ENABLE);
+        TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
+        {
+            // 打开捕获比较功能
+            TIM_CCxCmd(TIM1, TIM_Channel_1, TIM_CCx_Enable);
+            TIM_CCxCmd(TIM1, TIM_Channel_2, TIM_CCx_Enable);
+        }
 
         // 发射10us的脉冲
-        GPIO_SetBits(GPIOB, GPIO_Pin_8);
-        /**
-         * for执行一次，需要消耗8个指令周期
-         */
-        for (uint8_t i = 0; i < 10; i++)
-            ;
+        GPIO_SetBits(GPIOA, GPIO_Pin_7);
+        Delay_us(15);
         // 脉冲发射完毕
-        GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+        GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 
         // 等待发射&回应
         uint8_t success = 0;
-        uint16_t ccr1_val = 0, ccr2_val = 0;
         for (;;)
         {
-            // 获取ccr1 ccr2的值
-            ccr1_val = TIM_GetCapture1(TIM1);
-            ccr2_val = TIM_GetCapture2(TIM1);
-            if (ccr1_val > 0 && ccr2_val > 0)
+            /**
+             * 获取标识位: TIMx_SR 寄存器, 查看手册: "14.3.6  Input capture mode"
+             */
+            FlagStatus ccr1_flag = TIM_GetFlagStatus(TIM1, TIM_FLAG_CC1);
+            FlagStatus ccr2_flag = TIM_GetFlagStatus(TIM1, TIM_FLAG_CC2);
+            // 都测量成功
+            if (ccr1_flag == SET && ccr2_flag == SET)
             {
                 success = 1;
-            }
-            if (success)
-            {
-                // 距离(cm) = (ccr2_val - ccr1_val) * (脉宽) * 340*100 /2 , 脉宽为1us
-                uint16_t distance_cm = (ccr2_val - ccr1_val) * (1 / 1000 / 1000) * 340 * 100 / 2;
-                // 如果距离小于20cm，则亮灯
-                if (distance_cm <= 30)
-                {
-                    GPIO_SetBits(GPIOB, GPIO_Pin_9);
-                }
-                else
-                { // 超过了，那么不亮了
-                    GPIO_ResetBits(GPIOB, GPIO_Pin_9);
-                }
+                break;
             }
         }
+
+        // 打开捕获比较功能
+        TIM_CCxCmd(TIM1, TIM_Channel_1, TIM_CCx_Disable);
+        TIM_CCxCmd(TIM1, TIM_Channel_2, TIM_CCx_Disable);
+        TIM_Cmd(TIM1, DISABLE);
+
+        // 如果测量成功
+        if (success)
+        {
+            uint16_t ccr1_val = TIM_GetCapture1(TIM1);
+            uint16_t ccr2_val = TIM_GetCapture2(TIM1);
+            // 距离(cm) = (ccr2_val - ccr1_val) * (脉宽) * 340*100 /2 , 脉宽为1us
+            float pulse_width = (ccr2_val - ccr1_val) * 1e-6f;
+            float distance_cm = 340.0f * 100 * pulse_width / 2.0f;
+            // 如果距离小于20cm，则亮灯
+            if (distance_cm <= 20)
+            {
+                GPIO_SetBits(GPIOB, GPIO_Pin_12);
+            }
+            else
+            { // 超过了，那么不亮了
+                GPIO_ResetBits(GPIOB, GPIO_Pin_12);
+            }
+        } 
+        // 置位
+        success = 0;
+        Delay_ms(60);
     }
 
     return 0;

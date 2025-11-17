@@ -219,6 +219,13 @@ void HC_SR04_init()
     TIM_CCxCmd(TIM1, TIM_Channel_2, TIM_CCx_Enable);
 }
 
+/**
+ * In Input capture mode, the Capture/Compare registers (TIMx_CCRx) are used to latch the value of the counter after a transition detected by the corresponding ICx signal.
+ *  When a capture occurs, the corresponding CCXIF flag (TIMx_SR register) is set and an interrupt or a DMA request can be sent if they are enabled.
+ *  If a capture occurs while the CCxIF flag was already high, then the over-capture flag CCxOF (TIMx_SR register) is set.
+ *  CCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the TIMx_CCRx register.
+ *  CCxOF is cleared when written to 0.???
+ */
 float HC_SR04_measure()
 {
     //  清除cc1_IF cc2_IF标志位

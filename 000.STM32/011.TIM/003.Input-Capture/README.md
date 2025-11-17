@@ -14,6 +14,26 @@
 
 如图右上角，滤波前的信号存在毛刺，这会导致程序异常，因此使用滤波器进行滤波，滤波后的信号也在图中。
 
+这里涉及两个参数的配置:
+- 输入滤波的采样频率: 
+   + 等间隔对输入信号进行采样，这个等间隔就是采样频率;
+- 判定次数:
+   + 当采集到高电平的次数>=N,那么就认为是一个从低电平到高电平的改变;
+- 阅读代码:[]()查看这两个参数怎么配置
+  ```c
+    // 设置输入滤波的分频系数: 设置 fCK_INT -> fDTS 的分频系数
+    TIM_SetClockDivision(TIM1, TIM_CKD_DIV2);
+
+        TIM_ICInitTypeDef icInitConfig = {
+        .TIM_Channel = TIM_Channel_1,                // 配置输入渠道
+        .TIM_ICPolarity = TIM_ICPolarity_Rising,     // 配置边沿检测
+        .TIM_ICSelection = TIM_ICSelection_DirectTI, // 配置信号选择
+        .TIM_ICPrescaler = TIM_ICPSC_DIV1,           // 配置预分频系数
+        .TIM_ICFilter = 0x08};                       // 如图，此时采样频率 = fDTS/8 , 采样次数N为6
+    TIM_ICInit(TIM1, &icInitConfig);
+  ```
+
+
 ### 滤波器原理
 ##### 采样
 等间隔<sub>**采样频率**</sub>对输入信号进行采样<sub>读取信号的高低电平</sub>，当连续获取到N<sub>**上图中的N(判定次数)**</sub>个高电平，那么才认为此处是一个上升沿。同理，当连续获取到N<sub>**上图中的N(判定次数)**</sub>个低电平，那么才认为此处是一个下降沿。
@@ -22,7 +42,7 @@
 
 
 ## 基本原理
-在电平变化(上升沿/下降沿)时，将CNT的值保存到CCR中
+在电平变化(上升沿/下降沿)时，触发ccx事件，将CNT的值保存到CCR中
 
 
 ## 什么是分辨率

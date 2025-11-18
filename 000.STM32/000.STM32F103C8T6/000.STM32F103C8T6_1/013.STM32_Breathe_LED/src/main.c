@@ -67,6 +67,7 @@ int main(int argc, char **argv)
         GPIO_Init(GPIOB, &gpioBInitConfig);
     }
 
+    // 打开MOE: Main output enable,即最后一个开关
     TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
     // 开启定时器

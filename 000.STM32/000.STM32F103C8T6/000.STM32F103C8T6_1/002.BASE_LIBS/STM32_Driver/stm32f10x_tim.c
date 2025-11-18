@@ -821,7 +821,7 @@ void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the TIM peripheral Main Outputs.
+  * @brief  Enables or disables the TIM peripheral Main Outputs. (启用/禁用TIM外设主输出)
   * @param  TIMx: where x can be 1, 8, 15, 16 or 17 to select the TIMx peripheral.
   * @param  NewState: new state of the TIM peripheral Main Outputs.
   *   This parameter can be: ENABLE or DISABLE.

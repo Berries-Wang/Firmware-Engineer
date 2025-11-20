@@ -17,15 +17,53 @@ Any USART bidirectional communication requires a minimum of two pins: Receive Da
 
 阅读:[27.3 USART functional description](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf) + [第4章 串口通信U(S)ART.pdf](../../002.REF_DOCS/第4章%20串口通信U(S)ART.pdf),可以知晓USART级别工作原理
 
-## 通信方式
+
 结合图[具体电路](#具体电路) + 图[USART结构框图](#usart结构框图) 来分析USART通信方式
 
+## 通信原理
+### 核心: 波特率<sup>波特率产生原理: 在时钟信号的上升沿到来时，移位寄存器(Shift register )才会向右移动一位</sup>
+
+由波特率来触发操作移位寄存器来发送/接收数据,所以调整时钟频率，就可以调整波特率
+
+
+### 数据帧格式
+如手册图:['Figure 281. Configurable stop bits'](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)  ，完整的数据帧包含: 起始位 、数据位（数据位长度需注意）、奇偶校验位、停止位 
+
+##### idle frame 、Break frame 是什么?
+- Break Frame 是一个特殊的、用于通信协议的帧，它的本质是：在一个字符帧的时间内，持续发送逻辑‘0’（低电平）
+  + 核心原理：通过配置USART的控制寄存器，将 SBK 位置1。硬件会自动在当前数据发送完成后，在TX线上产生一个低电平脉冲，其持续时间由 LBDL 等位控制（通常是10或11位时间），然后自动将 SBK 位清零
+
+- Idle characters
+  + 在不发送数据的时候，TX引脚默认就是高电平，即 默认就是发送idle frame
+
+
+
 ### 发送数据 <sup>参考:[27.3.2 Transmitter](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)</sup>
+- 前置步骤: 配置pin、配置数据帧格式、波特率、打开UE(打开USART) ... ,详细查阅手册
 - 发送过程: 写入数据到 TDR(Transmit Data register) , 再通过串并转换电路，数据由TDR(Transmit Data register) 复制到'Transmit Shift register' , 再通过TX pin发送出去.
   + 所以，总体发送流程: 编程接口 -> TDR -> Transmit Shift register -> TX pin -> 接收方
-  + 'TXE' 标识位，是 TDR 的标识位 , 若当前 TXE 为1，则说明数据已经移动到移位寄存器(Transmit Shift Register)中，那么就可以向TDR中写入下一轮要发送的数据了。
+  + 'TXE' 标识位，是 TDR 的标识位 , 若当前 TXE 为1，则说明数据已经移动到移位寄存器(Transmit Shift Register)中，那么就可以向TDR中写入下一轮要发送的数据了。<sup>如[Single byte communication章节描述](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)</sup>
+  + When a transmission is taking place, a write instruction to the USART_DR register stores the data in the TDR register and which is copied in the shift register at the end of the current transmission.<sup>当传输发生时，对USART_DR寄存器的写指令将数据存储在TDR寄存器中，并在当前传输结束时将其复制到移位寄存器中。</sup>,当没有传输时，对TDR寄存器的写指令会立即将数据直接放到移位寄存器中
+
+
+##### 寄存器&标识位 <sup>均来自于手册参考:[rm0008-stm32f101xx-stm32f102xx-stm32f103xx-...](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)</sup>
+|寄存器|寄存器名称|标识位|标识位含义|
+|-|-|-|-|
+|USART_CR1|Control register 1 (USART_CR1)|TE|Transmitter enable(是否允许发送数据)|
+|USART_CR1|Control register 1 (USART_CR1)|UE|USART enable,USART总开关,即 是否打开USART|
+
+---
 
 ### 接收数据
+##### Start bit detection <sup>开始位检测</sup>
+一个特殊的检测： 下降沿 + 3、5、7位为0(第一次采样) + 8、9、10位为0(第二次采样), 则说明 ‘The start bit is validated’
+
+##### 寄存器&标识位 <sup>均来自于手册参考:[rm0008-stm32f101xx-stm32f102xx-stm32f103xx-...](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)</sup>
+|寄存器|寄存器名称|标识位|标识位含义|
+|-|-|-|-|
+| | |RXNE| |
+|||RXNEIE||
+
 
 ### 异步通信方式
 
@@ -35,6 +73,11 @@ Any USART bidirectional communication requires a minimum of two pins: Receive Da
 
 起始位、数据位、校验位、停止位 
 
+
+---
+
+## USART 中断
+- 一次发送完成中断: If a frame is transmitted (after the stop bit) and the TXE bit is set, the TC bit goes high. An interrupt is generated if the TCIE bit is set in the USART_CR1 register.
 
 
 

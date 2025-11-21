@@ -54,9 +54,9 @@ Any USART bidirectional communication requires a minimum of two pins: Receive Da
 
 ---
 
-### 接收数据
+### 接收数据<sup>参考:[27.3.3 Receiver](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)</sup>
 ##### Start bit detection <sup>开始位检测</sup>
-一个特殊的检测： 下降沿 + 3、5、7位为0(第一次采样) + 8、9、10位为0(第二次采样), 则说明 ‘The start bit is validated’
+一个特殊的检测： 下降沿 + 3、5、7位为0(第一次采样) + 8、9、10位为0(第二次采样), 则说明 ‘The start bit is validated(经过验证的)’
 
 ##### 寄存器&标识位 <sup>均来自于手册参考:[rm0008-stm32f101xx-stm32f102xx-stm32f103xx-...](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)</sup>
 |寄存器|寄存器名称|标识位|标识位含义|
@@ -64,6 +64,27 @@ Any USART bidirectional communication requires a minimum of two pins: Receive Da
 | | |RXNE| |
 |||RXNEIE||
 
+##### Overrun error
+###### 发生原因
+当收到数据，但RXNE并没有被重置(RDR中的数据没有处理)时，此时会发生 Overrun error
+- 此时，移位寄存器(Receive Shift register)中的数据不会迁移到RDR中
+
+###### 具体细节<sup>各个单位的状态</sup>
+- The ORE bit is set
+- 移位寄存器会被覆盖
+- .... 
+
+##### Noise error (噪声误差)
+- 采样值 000 或 111 才是有效数据
+
+##### Framing error
+
+##### 27.3.7 Parity control(奇偶校验)
+- 校验规则 、 状态位(PE in USART_CR1)
+
+### Fractional baud rate generation (分数波特率生成)
+- Fractional ? 是因为 USARTDIV(分频系数) 不是一个整数 。查阅手册，在设置USARTDIV后，会进行一些计算，最终导致实际波特率(USART_BRR的值)和预期的波特率有误差
+  + 记住表: "Table 192. Error calculation for programmed baud rates"
 
 ### 异步通信方式
 

@@ -74,8 +74,8 @@ Any USART bidirectional communication requires a minimum of two pins: Receive Da
 - 移位寄存器会被覆盖
 - .... 
 
-##### Noise error (噪声误差)
-- 采样值 000 或 111 才是有效数据
+##### Noise error (噪声误差： Over-Sampling <sup>过采样技术</sup>)
+- 采样值 000 或 111 才是有效数据 <sup>以较高的频率连续采样三次，如果三次都不一致，那么就说明产生了噪声错</sup>
 
 ##### Framing error
 
@@ -123,6 +123,9 @@ Any USART bidirectional communication requires a minimum of two pins: Receive Da
 
 
 ### 数据帧
+
+
+### CK 
 
 
 ---

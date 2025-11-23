@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 
     init_led();
 
-    const char hello_world[] = "Hello World! \n";
+    const char hello_world[] = "Hello USART! \n";
 
     // 间隔一段时间就发送一个Hello World
     for (;;)
@@ -153,19 +153,14 @@ void init_RCC()
     {
     }
 
-    /* Enable GPIOA, GPIOB, GPIOC, GPIOD, GPIOE and AFIO clocks */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE | RCC_APB2Periph_AFIO, ENABLE);
-
-    /* Set the Vector Table base address at 0x08000000. */
-    NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
-
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
-
     /* Configure HCLK clock as SysTick clock source. */
     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
 
     /* SPI2 Periph clock enable */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
+
+    // 关闭HSI,默认就是HSI
+    RCC_HSICmd(DISABLE);
 }
 
 void init_USART_NVIC()
@@ -177,7 +172,7 @@ void init_USART_NVIC()
         .NVIC_IRQChannel = USART1_IRQn,
         .NVIC_IRQChannelPreemptionPriority = 0x2,
         .NVIC_IRQChannelSubPriority = 0x2,
-        .NVIC_IRQChannelCmd= ENABLE};
+        .NVIC_IRQChannelCmd = ENABLE};
     NVIC_Init(&USART1_NVIC_Conf);
     // 打开USART事件源
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);

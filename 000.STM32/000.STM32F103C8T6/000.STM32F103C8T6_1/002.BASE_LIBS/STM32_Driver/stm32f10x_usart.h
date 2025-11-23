@@ -377,6 +377,10 @@ void USART_Init(USART_TypeDef* USARTx, USART_InitTypeDef* USART_InitStruct);
 void USART_StructInit(USART_InitTypeDef* USART_InitStruct);
 void USART_ClockInit(USART_TypeDef* USARTx, USART_ClockInitTypeDef* USART_ClockInitStruct);
 void USART_ClockStructInit(USART_ClockInitTypeDef* USART_ClockInitStruct);
+/**
+ * 开关,最后开启USART的那个关键性的开关
+ * 可以查阅具体是操作哪个寄存器 ， 再结合手册分析
+ */
 void USART_Cmd(USART_TypeDef* USARTx, FunctionalState NewState);
 void USART_ITConfig(USART_TypeDef* USARTx, uint16_t USART_IT, FunctionalState NewState);
 void USART_DMACmd(USART_TypeDef* USARTx, uint16_t USART_DMAReq, FunctionalState NewState);

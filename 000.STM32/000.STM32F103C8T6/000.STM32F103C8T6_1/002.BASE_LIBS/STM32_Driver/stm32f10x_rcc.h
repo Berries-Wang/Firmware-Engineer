@@ -489,9 +489,9 @@ typedef struct
   * @}
   */
 
-/** @defgroup APB2_peripheral 
-  * @{
-  */
+/** @defgroup APB2_peripheral
+ * @{
+ */
 
 #define RCC_APB2Periph_AFIO              ((uint32_t)0x00000001)
 #define RCC_APB2Periph_GPIOA             ((uint32_t)0x00000004)
@@ -517,8 +517,8 @@ typedef struct
 
 #define IS_RCC_APB2_PERIPH(PERIPH) ((((PERIPH) & 0xFFC00002) == 0x00) && ((PERIPH) != 0x00))
 /**
-  * @}
-  */ 
+ * @}
+ */
 
 /** @defgroup APB1_peripheral 
   * @{

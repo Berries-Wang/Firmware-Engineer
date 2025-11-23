@@ -81,6 +81,8 @@ Any USART bidirectional communication requires a minimum of two pins: Receive Da
 
 ##### 27.3.7 Parity control(奇偶校验)
 - 校验规则 、 状态位(PE in USART_CR1)
+- 如果是奇校验，则去除Start Bit , Stop Bit外的 Data Bit; 如果Data Bit为偶数个1,则Parity Bit需要设置为1,因为是奇校验,所以 Data Bit + Parity Bit要有奇数个1; 
+  > 查阅手册:[Table 195. Frame formats](../../002.REF_DOCS/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)
 
 ### Fractional baud rate generation (分数波特率生成)
 - Fractional ? 是因为 USARTDIV(分频系数) 不是一个整数 。查阅手册，在设置USARTDIV后，会进行一些计算，最终导致实际波特率(USART_BRR的值)和预期的波特率有误差

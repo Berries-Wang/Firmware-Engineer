@@ -382,6 +382,9 @@ void USART_ClockStructInit(USART_ClockInitTypeDef* USART_ClockInitStruct);
  * 可以查阅具体是操作哪个寄存器 ， 再结合手册分析
  */
 void USART_Cmd(USART_TypeDef* USARTx, FunctionalState NewState);
+/**
+ * 配置USART中断
+ */
 void USART_ITConfig(USART_TypeDef* USARTx, uint16_t USART_IT, FunctionalState NewState);
 void USART_DMACmd(USART_TypeDef* USARTx, uint16_t USART_DMAReq, FunctionalState NewState);
 void USART_SetAddress(USART_TypeDef* USARTx, uint8_t USART_Address);

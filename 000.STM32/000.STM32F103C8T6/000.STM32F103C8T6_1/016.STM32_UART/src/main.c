@@ -23,12 +23,18 @@ void init_RCC();
  */
 void init_USART();
 
+void init_USART_NVIC();
+
+void init_led();
+
+void led_on();
+
+void led_off();
+
 /**
  * 发送数据
  */
 void send_data(u16 cur_data);
-
-u16 receive_data();
 
 int main(int argc, char **argv)
 {
@@ -36,6 +42,11 @@ int main(int argc, char **argv)
     init_RCC();
 
     init_USART();
+
+    // 配置NVIC
+    init_USART_NVIC();
+
+    init_led();
 
     const char hello_world[] = "Hello World! \n";
 
@@ -157,6 +168,21 @@ void init_RCC()
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 }
 
+void init_USART_NVIC()
+{
+    // 配置抢占位和子优先级位(执行顺序)
+    NVIC_SetPriorityGrouping(NVIC_PriorityGroup_2);
+    // 配置数据接收事件
+    NVIC_InitTypeDef USART1_NVIC_Conf = {
+        .NVIC_IRQChannel = USART1_IRQn,
+        .NVIC_IRQChannelPreemptionPriority = 0x2,
+        .NVIC_IRQChannelSubPriority = 0x2,
+        .NVIC_IRQChannelCmd= ENABLE};
+    NVIC_Init(&USART1_NVIC_Conf);
+    // 打开USART事件源
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+}
+
 void send_data(u16 cur_data)
 {
     // 如果TDR不为空,那说明数据还没有发送完,等待发送完成
@@ -164,8 +190,54 @@ void send_data(u16 cur_data)
         ;
 
     USART_SendData(USART1, cur_data);
+
+    // 等待移位寄存器数据发送完成
+    while ((USART_GetFlagStatus(USART1, USART_FLAG_TC)) == RESET)
+        ;
 }
 
-u16 receive_data()
+/**
+ * USART1 中断处理函数
+ */
+void USART1_IRQHandler()
 {
+    // 是否有数据到达
+    if ((USART_GetITStatus(USART1, USART_IT_RXNE)) == SET)
+    {
+        // 读取传输过来的数据
+        uint16_t receive_data = USART_ReceiveData(USART1);
+        if ('O' == receive_data)
+        {
+            led_on();
+        }
+        else if ('C' == receive_data)
+        {
+            led_off();
+        }
+
+        USART_ClearITPendingBit(USART1, USART_FLAG_RXNE);
+    }
+}
+
+void init_led()
+{
+    // 开启时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
+    // 初始化PA9
+    GPIO_InitTypeDef PB9_Init_Conf = {
+        .GPIO_Pin = GPIO_Pin_9,
+        .GPIO_Speed = GPIO_Speed_50MHz,
+        .GPIO_Mode = GPIO_Mode_Out_PP};
+    GPIO_Init(GPIOB, &PB9_Init_Conf);
+}
+
+void led_on()
+{
+    GPIO_SetBits(GPIOB, GPIO_Pin_9);
+}
+
+void led_off()
+{
+    GPIO_ResetBits(GPIOB, GPIO_Pin_9);
 }

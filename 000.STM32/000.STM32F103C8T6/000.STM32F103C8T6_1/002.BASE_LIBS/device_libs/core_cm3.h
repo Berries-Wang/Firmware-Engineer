@@ -1457,7 +1457,7 @@ extern uint32_t __STREXW(uint32_t value, uint32_t *addr);
 /**
  * @brief  Set the Priority Grouping in NVIC Interrupt Controller
  *
- * @param  PriorityGroup is priority grouping field
+ * @param  PriorityGroup is priority grouping field ,参考: NVIC_PriorityGroup_x
  *
  * Set the priority grouping field using the required unlock sequence.
  * The parameter priority_grouping is assigned to the field 

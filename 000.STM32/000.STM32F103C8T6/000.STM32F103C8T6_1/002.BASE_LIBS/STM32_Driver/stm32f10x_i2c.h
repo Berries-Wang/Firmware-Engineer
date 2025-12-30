@@ -530,22 +530,50 @@ typedef struct
   * @{
   */
 
-void I2C_DeInit(I2C_TypeDef* I2Cx);
+/**
+ * 将 I2Cx 外设寄存器取消初始化为其默认复位值。
+ * 
+ * 重新配置 I2C 之前进行反初始化： 即 复位，将指定的 I2C 外设寄存器恢复到硬件复位后的初始状态
+ */
+void I2C_DeInit(I2C_TypeDef *I2Cx);
+/**
+ * I2C初始化
+ */
 void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct);
+
 void I2C_StructInit(I2C_InitTypeDef* I2C_InitStruct);
+/**
+ * xxx_Cmd 一般就是开启对应功能的函数
+ */
 void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_DMACmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_DMALastTransferCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
+/**
+ * 产生开始位
+ */
 void I2C_GenerateSTART(I2C_TypeDef* I2Cx, FunctionalState NewState);
+/**
+ * 产生停止位
+ */
 void I2C_GenerateSTOP(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_AcknowledgeConfig(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address);
 void I2C_DualAddressCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_GeneralCallCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_ITConfig(I2C_TypeDef* I2Cx, uint16_t I2C_IT, FunctionalState NewState);
+/**
+ * 发送数据
+ */
 void I2C_SendData(I2C_TypeDef* I2Cx, uint8_t Data);
+/**
+ * 接收数据?
+ */
 uint8_t I2C_ReceiveData(I2C_TypeDef* I2Cx);
+/**
+ * 发送7位地址?，寻址只能用这个?
+ */
 void I2C_Send7bitAddress(I2C_TypeDef* I2Cx, uint8_t Address, uint8_t I2C_Direction);
+
 uint16_t I2C_ReadRegister(I2C_TypeDef* I2Cx, uint8_t I2C_Register);
 void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_NACKPositionConfig(I2C_TypeDef* I2Cx, uint16_t I2C_NACKPosition);
@@ -652,6 +680,8 @@ uint32_t I2C_GetLastEvent(I2C_TypeDef* I2Cx);
  * 
  *  3) Flag-based state monitoring
  *******************************************************************************
+ *
+ * 读取标志位
  */
 FlagStatus I2C_GetFlagStatus(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG);
 /**

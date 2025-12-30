@@ -155,6 +155,7 @@
 
 /**
   * @brief  Deinitializes the I2Cx peripheral registers to their default reset values.
+  * (将 I2Cx 外设寄存器取消初始化为其默认复位值。)
   * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
   * @retval None
   */
@@ -1273,7 +1274,7 @@ ITStatus I2C_GetITStatus(I2C_TypeDef* I2Cx, uint32_t I2C_IT)
 }
 
 /**
-  * @brief  Clears the I2Cx�s interrupt pending bits.
+  * @brief  Clears the I2Cx�s interrupt pending bits.
   * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
   * @param  I2C_IT: specifies the interrupt pending bit to clear. 
   *   This parameter can be any combination of the following values:
